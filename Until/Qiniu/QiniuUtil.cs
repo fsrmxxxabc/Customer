@@ -21,6 +21,8 @@ namespace Customer.Until.Qiniu
 
         private PutPolicy PutPolicys { get; set; }
 
+        private Stream QiniuStream { get; set; }
+
         private enum QiniuZones {ZONE_CN_East,ZONE_CN_North,ZONE_CN_South,ZONE_US_North,ZONE_AS_Singapore};
 
         /// <summary>
@@ -90,19 +92,9 @@ namespace Customer.Until.Qiniu
         /// <returns></returns>
         public string FormUpload(string key,string path,int type)
         {
-            ConfigUtil = new Config();
             FormUploader formUploader = new FormUploader(ConfigUtil);
-            switch (type)
-            {
-                case 1:
-                    TokenUtil = null;
-                    return formUploader.UploadFile(path, key, TokenUtil, null).ToString();
-                case 2:
-                    TokenUtil = key;
-                    return formUploader.UploadFile(path, key, TokenUtil, null).ToString();
-                default:
-                    return "参数错误";
-            }
+            HttpResult httpResult = formUploader.UploadFile(path, key, TokenUtil, null);
+            return httpResult.Text;
         }
 
         /// <summary>
@@ -121,6 +113,36 @@ namespace Customer.Until.Qiniu
             };
 
             HttpResult httpResult = resumableUploader.UploadFile(path, key, TokenUtil, putExtra);
+
+            return httpResult.Text;
+        }
+
+        public System.Drawing.Bitmap BitMapToStream
+        {
+            set
+            {
+                if(value != null)
+                {
+                    QiniuStream = new MemoryStream();
+                    value.Save(QiniuStream, System.Drawing.Imaging.ImageFormat.Bmp);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 文件流上传
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        public string StreamUpload(string key)
+        {
+            ResumableUploader resumableUploader = new ResumableUploader(ConfigUtil);
+
+            HttpResult httpResult = resumableUploader.UploadStream (QiniuStream, key, TokenUtil, null);
+
+            QiniuStream.Close();
 
             return httpResult.Text;
         }

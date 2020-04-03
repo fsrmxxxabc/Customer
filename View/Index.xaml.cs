@@ -198,29 +198,36 @@ namespace Customer.View
 
             Show();
 
-            //test
-            BitmapSource bmp = e.Bmp;
+            QiniuUtil qiniuUtil = new QiniuUtil()
+            {
+                ConfigUtil = new Qiniu.Storage.Config(),
+                TokenUtil = null,
+                BitMapToStream = screenCaputre.GetBitMap,
+            };
+            string ret = qiniuUtil.StreamUpload("chat_screen_caputre" + CommonUtil.GetTimeSecond() + "_msg" );
+
+            JObject jObject = JObject.Parse(ret);
+
+            CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);
+
+            /*BitmapSource bmp = e.Bmp;
 
             Image image = new Image()
             {
                 Source = bmp,
+                Width = 200
             };
 
-            /*using(MemoryStream stream = new MemoryStream())
-            {
-                Image image = new Image()
-                {
-                    Source = bmp
-                };
-                image.Resources.Source.
-            }*/
-            
+            _ = new InlineUIContainer(image,this.ChatingContentMsg.Selection.Start);*/
+
+            /*
             Window win = new Window { SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize };
 
             Canvas canvas = new Canvas { Width = bmp.Width, Height = bmp.Height, Background = new ImageBrush(bmp) };
 
             win.Content = canvas;
             win.Show();
+            */
         }
     }
 }

@@ -1,0 +1,103 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>bitbug_favicon.ico</ApplicationIcon>
+    <UserSecretsId>19a7793f-f219-4a97-9cc8-473b468b40cf</UserSecretsId>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>yestar.zwd</Authors>
+    <Company>艺星Yestar</Company>
+    <Product>星快通客服语音聊天系统</Product>
+    <Description>星快通客服语音聊天系统</Description>
+    <PackageIcon>chat_desktop_top_icons.png</PackageIcon>
+    <PackageIconUrl />
+    <StartupObject>Customer.App</StartupObject>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="chat_desktop_logo.png" />
+    <None Remove="chat_desktop_top_icons.png" />
+    <None Remove="chat_login_right_field1.png" />
+    <None Remove="chat_login_right_field2.png" />
+    <None Remove="chat_login_right_top1.png" />
+    <None Remove="Resources\chat_desktop_top_icons.png" />
+    <None Remove="Resources\chat_desktop_triangle_icon.png" />
+    <None Remove="Resources\chat_login_right_field1.png" />
+    <None Remove="Resources\chat_login_right_field2.png" />
+    <None Remove="Resources\chat_login_right_top1.png" />
+    <None Remove="Resources\find_mr_icon.png" />
+    <None Remove="Resources\greet_file_icon.png" />
+    <None Remove="Theme\skin_wt_icon.png" />
+    <None Remove="View\moredw_blue_icon.png" />
+    <None Remove="View\screen_mr_icon.png" />
+    <None Remove="View\state_online_icon.png" />
+    <None Remove="View\tk_emoji_icon.png" />
+    <None Remove="View\tk_file_icon.png" />
+    <None Remove="View\tk_good_icon.png" />
+    <None Remove="View\tk_picture_icon.png" />
+    <None Remove="View\tk_scrshot_icon.png" />
+    <None Remove="View\tk_shock_icon.png" />
+    <None Remove="View\tk_text_icon.png" />
+    <None Remove="View\tk_trans_icon.png" />
+    <None Remove="View\tk_voice_icon.png" />
+    <None Remove="View\tk_word_icon.png" />
+    <None Include="D:\Desktop\星快通\图片\chat_desktop_top_icons.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="chat_desktop_logo.png" />
+    <Resource Include="Resources\chat_desktop_top_icons.png" />
+    <Resource Include="Resources\chat_desktop_triangle_icon.png" />
+    <Resource Include="Resources\chat_login_right_field1.png" />
+    <Resource Include="Resources\chat_login_right_field2.png" />
+    <Resource Include="Resources\chat_login_right_top1.png" />
+    <Resource Include="Resources\find_mr_icon.png" />
+    <Resource Include="Resources\greet_file_icon.png" />
+    <Resource Include="Theme\skin_wt_icon.png" />
+    <Resource Include="Resources\moredw_blue_icon.png" />
+    <Resource Include="Resources\screen_mr_icon.png" />
+    <Resource Include="Resources\state_online_icon.png" />
+    <Resource Include="Resources\tk_emoji_icon.png" />
+    <Resource Include="Resources\tk_file_icon.png" />
+    <Resource Include="Resources\tk_good_icon.png" />
+    <Resource Include="Resources\tk_picture_icon.png" />
+    <Resource Include="Resources\tk_scrshot_icon.png" />
+    <Resource Include="Resources\tk_shock_icon.png" />
+    <Resource Include="Resources\tk_text_icon.png" />
+    <Resource Include="Resources\tk_trans_icon.png" />
+    <Resource Include="Resources\tk_voice_icon.png" />
+    <Resource Include="Resources\tk_word_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="3.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Qiniu" Version="7.3.1.1" />
+    <PackageReference Include="Spire.Doc" Version="8.3.15" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RisCaptureLib">
+      <HintPath>..\..\CaptureScreenSln\RisCaptureLib\bin\Debug\RisCaptureLib.dll</HintPath>
+      <Private>true</Private>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
+</Project>

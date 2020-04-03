@@ -1,0 +1,1100 @@
+﻿<Window x:Class="Customer.View.Index"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:local="clr-namespace:Customer.View"
+        xmlns:themes ="clr-namespace:Customer.Theme"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Style="{StaticResource Style.Window.Universal}"
+        Background="#FF1F91FE"
+        mc:Ignorable="d"
+        Icon="../Resources/chat_desktop_top_icons.png"
+        Title="Yestar 客服聊天分析系统" WindowStartupLocation="CenterScreen" Height="800" Width="1280" VerticalAlignment="Center"   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    <!--Background="{DynamicResource MaterialDesignPaper}"  Background="#FF1F91FE"  Style="{StaticResource Style.Window.Universal}-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!-- searchstyle -->
+            <Style x:Key="SearchBoxStyle" TargetType="{x:Type TextBox}">
+                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                <Setter Property="BorderBrush" Value="#FFABAdB3"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="AllowDrop" Value="true"/>
+                <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border CornerRadius="14" x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                            <Condition Property="IsSelectionActive" Value="false"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- tree view -->
+            <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
+                <Setter Property="Focusable" Value="False"/>
+                <Setter Property="Width" Value="16"/>
+                <Setter Property="Height" Value="16"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Grid Width="16" Height="16"  Background="Transparent">
+                                <Path x:Name="ExpandPath"
+                                  HorizontalAlignment="Left" 
+                                  VerticalAlignment="Center" 
+                                  Margin="0"
+                                  Fill="{TemplateBinding Foreground}"
+                                 Data="M 4 0 L 8 4 L 4 8 Z"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Data" TargetName="ExpandPath" Value="M 0 4 L 8 4 L 4 8 Z"/>
+                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="False"/>
+                                        <Condition Property="IsChecked" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Stroke" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                    <Setter Property="Fill" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="TreeViewItemFocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ListTreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                <Setter Property="Padding" Value="1,0,0,0"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MinWidth="19" Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <ToggleButton x:Name="Expander" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ExpandCollapseToggleStyle}"/>
+                                <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Grid.Column="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                    <ContentPresenter x:Name="PART_Header" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                                <ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsExpanded" Value="false">
+                                    <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                                </Trigger>
+                                <Trigger Property="HasItems" Value="false">
+                                    <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <!--<Setter Property="Background" TargetName="Bd" Value="#e2edf9"/>-->
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="true"/>
+                                        <Condition Property="IsSelectionActive" Value="false"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                                </MultiTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
+                        <Setter Property="ItemsPanel">
+                            <Setter.Value>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel/>
+                                </ItemsPanelTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- content label -->
+            <Style x:Key="ContLabelStyle" TargetType="{x:Type Label}">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Label}">
+                            <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- right button  -->
+
+            <Style x:Key="FocusVisual">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle Margin="2" StrokeDashArray="1 2" SnapsToDevicePixels="true" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="RightButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+                <Setter Property="Background" Value="#FFDDDDDD"/>
+                <Setter Property="BorderBrush" Value="#FF707070"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border CornerRadius="5" x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
+                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsDefaulted" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                                    <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                                    <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- right search textBox style -->
+            <SolidColorBrush x:Key="RightSearchTextBox.Static.Border" Color="#FFABAdB3"/>
+            <SolidColorBrush x:Key="RightSearchTextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+            <SolidColorBrush x:Key="RightSearchTextBox.Focus.Border" Color="#FF569DE5"/>
+            <Style x:Key="RightSearchTextBoxStyle" TargetType="{x:Type TextBox}">
+                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource RightSearchTextBox.Static.Border}"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="AllowDrop" Value="true"/>
+                <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource RightSearchTextBox.MouseOver.Border}"/>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="true">
+                                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource RightSearchTextBox.Focus.Border}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                            <Condition Property="IsSelectionActive" Value="false"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                    </MultiTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <!--  scope of action combox style  -->
+            <LinearGradientBrush x:Key="ComboBox.Static.Background" EndPoint="0,1" StartPoint="0,0">
+                <GradientStop Color="#FF1F91FE" Offset="1.0"/>
+                <!--<GradientStop Color="#FF1F91FE" Offset="1.0"/>-->
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Static.Border" Color="#FFACACAC"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Static.Glyph" Color="#FF606060"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Background" Color="#FFFFFFFF"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Border" Color="#FFABADB3"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Button.Background" Color="Transparent"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Button.Border" Color="Transparent"/>
+            <LinearGradientBrush x:Key="ScopeOfComboBox.MouseOver.Background" EndPoint="0,1" StartPoint="0,0">
+                <GradientStop Color="#FF1F91FE" Offset="1.0"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Border" Color="#FF7EB4EA"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Glyph" Color="#FF000000"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Background" Color="#FFFFFFFF"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Border" Color="#FF7EB4EA"/>
+            <LinearGradientBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Button.Background" EndPoint="0,1" StartPoint="0,0">
+                <GradientStop Color="#FF1F91FE" Offset="0.0"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Button.Border" Color="#FF7EB4EA"/>
+            <LinearGradientBrush x:Key="ScopeOfComboBox.Pressed.Background" EndPoint="0,1" StartPoint="0,0">
+                <GradientStop Color="#FFDAECFC" Offset="0.0"/>
+                <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Border" Color="#FF569DE5"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Glyph" Color="#FF000000"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Editable.Background" Color="#FFFFFFFF"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Editable.Border" Color="#FF569DE5"/>
+            <LinearGradientBrush x:Key="ScopeOfComboBox.Pressed.Editable.Button.Background" EndPoint="0,1" StartPoint="0,0">
+                <GradientStop Color="#FFDAEBFC" Offset="0.0"/>
+                <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Editable.Button.Border" Color="#FF569DE5"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Background" Color="#FFF0F0F0"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Border" Color="#FFD9D9D9"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Glyph" Color="#FFBFBFBF"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Background" Color="#FFFFFFFF"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Border" Color="#FFBFBFBF"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Button.Background" Color="Transparent"/>
+            <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Button.Border" Color="Transparent"/>
+            <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                <Setter Property="IsTabStop" Value="false"/>
+                <Setter Property="Focusable" Value="false"/>
+                <Setter Property="ClickMode" Value="Press"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Border CornerRadius="5" x:Name="templateRoot" Background="{StaticResource ComboBox.Static.Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{StaticResource ScopeOfComboBox.Static.Border}" SnapsToDevicePixels="true">
+                                <Border x:Name="splitBorder" BorderThickness="1" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0" SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+                                    <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" Fill="{StaticResource ScopeOfComboBox.Static.Glyph}" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                                </Border>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                        <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                        <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Static.Editable.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Static.Editable.Border}"/>
+                                    <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Static.Editable.Button.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Static.Editable.Button.Border}"/>
+                                </MultiDataTrigger>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ScopeOfComboBox.MouseOver.Glyph}"/>
+                                </Trigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Border}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Border}"/>
+                                    <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Button.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Button.Border}"/>
+                                </MultiDataTrigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ScopeOfComboBox.Pressed.Glyph}"/>
+                                </Trigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Border}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                        <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Border}"/>
+                                    <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Button.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Button.Border}"/>
+                                </MultiDataTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ScopeOfComboBox.Disabled.Glyph}"/>
+                                </Trigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                        <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Border}"/>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                        <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Border}"/>
+                                    <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Button.Background}"/>
+                                    <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Button.Border}"/>
+                                </MultiDataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <ControlTemplate x:Key="ScopeOfActionComboBoxTemplate" TargetType="{x:Type ComboBox}">
+                <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                    </Grid.ColumnDefinitions>
+                    <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                        <theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            <Border x:Name="dropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}">
+                                <ScrollViewer x:Name="DropDownScrollViewer">
+                                    <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                        <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                            <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
+                                        </Canvas>
+                                        <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </Border>
+                        </theme:SystemDropShadowChrome>
+                    </Popup>
+                    <ToggleButton x:Name="toggleButton" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>
+                    <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                        <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
+                        <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
+                    </Trigger>
+                    <Trigger Property="HasItems" Value="false">
+                        <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
+                    </Trigger>
+                    <MultiTrigger>
+                        <MultiTrigger.Conditions>
+                            <Condition Property="IsGrouping" Value="true"/>
+                            <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                        </MultiTrigger.Conditions>
+                        <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                    </MultiTrigger>
+                    <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+                        <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                        <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            
+            
+            <!-- 信息显示样式布局 -->
+            <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#007EB4EA"/>
+            <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#00569DE5"/>
+            <ControlTemplate x:Key="RichTextBoxTemplate1" TargetType="{x:Type TextBoxBase}">
+                <Border CornerRadius="3" x:Name="border" Background="{TemplateBinding Background}" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="4,4,4,4"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="true">
+                        <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+    <themes:UniversalWindowStyle.TitleBar>
+        <themes:UniversalTitleBar ForegroundColor="White" InactiveForegroundColor="#7FFFFFFF"
+                                  ButtonHoverForeground="White" ButtonHoverBackground="#3FFFFFFF"
+                                  ButtonPressedForeground="#7FFFFFFF" ButtonPressedBackground="#3F000000" />
+    </themes:UniversalWindowStyle.TitleBar>
+    <Grid Margin="0,40,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="8.5*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Image Width="68" Height="68" Source="https://video.yestar.com/chat_customer_service_old.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Image Width="22" Height="22" Source="../Resources/state_online_icon.png" HorizontalAlignment="Left" Margin="63,-29,0,0"/>
+            </StackPanel>
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-43,126,0">
+                <Image Source="https://video.yestar.com/chat_desktop_back_chat_icon.png" HorizontalAlignment="Left" VerticalAlignment="Center" Width="46" Margin="0,0,33,0"/>
+                <Label Content="返回对话" HorizontalAlignment="Left" FontSize="13" Foreground="#FFECE9E9" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+                <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_message_icon.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+                <Label Content="消息记录" HorizontalAlignment="Left" Foreground="#FFECE9E9" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+                <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_customer_car_icon.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+                <Label Content="查看名片" Foreground="#FFECE9E9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+                <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_customer_leave_msg_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+                <Label Content="访客留言" HorizontalAlignment="Left" Foreground="#FFECE9E9" VerticalAlignment="Bottom" Margin="-88,76,0,0" />
+                <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_type_log_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+                <Label Content="渠道记录" Foreground="#FFECE9E9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+                <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_customer_service_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+                <Label Content="星客服" Width="60"  HorizontalAlignment="Left" Foreground="#FFECE9E9" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+                <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_cloud_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+                <Label Content="智能云平台" Foreground="#FFECE9E9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+                <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_seting_center_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Label Content="设置中心" HorizontalAlignment="Left"  Foreground="#FFF5EFEF" VerticalAlignment="Bottom" Margin="-51,76,0,0"/>
+            </DockPanel>
+        </DockPanel>
+        <DockPanel Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.27*" MinWidth="287"/>
+                    <ColumnDefinition Width="5.45*" MinWidth="698"/>
+                    <ColumnDefinition Width="2.28*" MinWidth="285"/>
+                </Grid.ColumnDefinitions>
+                <ScrollViewer Grid.Column="0" Background="#FFF3F3F3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <ScrollViewer.Content>
+                        <StackPanel Background="#FFFAFAFA" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <DockPanel Margin="0,11,0,0" MaxHeight="29" Height="29">
+                                <TextBox Style="{DynamicResource SearchBoxStyle}" HorizontalAlignment="Center" Height="29" Width="207" VerticalAlignment="Center" Text="   搜索访客" ToolTip="搜索访客" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Margin="12,0,0,0" />
+                                <Image Source="../Resources/find_mr_icon.png" Width="16" Margin="-31,0,0,0"/>
+                                <Image Width="18" Source="../Resources/screen_mr_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,-19,0"/>
+                                <Label Content="筛选" VerticalAlignment="Center" FontSize="14" Background="{x:Null}" HorizontalAlignment="Center" Foreground="Black"/>
+                            </DockPanel>
+                            <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                                <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4"
+                                             IsChecked="True"
+                                             Content="对话中" BorderBrush="#FF1F91FE" />
+                                <RadioButton
+                                    Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4"
+                                    IsChecked="False"
+                                    Content="最近联系" BorderBrush="#FF1F91FE" />
+                            </StackPanel>
+                            <Grid MinWidth="220">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TreeView Grid.Row="0"
+                                          ItemsSource="{Binding MovieCategories}"
+                                          MinWidth="220">
+                                    <TreeViewItem x:Name="CustomerOwnerChating" Header="等待应答" Foreground="#FF4F4F4F"></TreeViewItem>
+                                    <TreeViewItem Header="自己"  Foreground="#FF4F4F4F">
+                                        <TreeViewItem Header="对话中的访客" Foreground="#FF4F4F4F" >
+                                            <TreeView Margin="-30,0,0,0">
+                                                <DockPanel Height="35">
+                                                    <Image Width="24" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                                    <Label Content="局域网 IP|艺星访客1528720115" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="12" Foreground="#FF4F4F4F" Margin="0,0,-70,0" Width="71"/>
+                                                    <Label Content="我想咨询一下玻尿酸注射" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Background="#00B8B8B8" Foreground="#FFB8B8B8" Margin="0,0,-17,0" Width="118" />
+                                                    <Label Content="17:01" FontSize="10" Foreground="#FF939393" Width="33"/>
+                                                </DockPanel>
+                                            </TreeView>
+                                        </TreeViewItem>
+                                        <TreeViewItem Header="转接中的访客" Foreground="#FF4F4F4F" ></TreeViewItem>
+                                        <TreeViewItem Header="主动邀请的访客" Foreground="#FF4F4F4F" ></TreeViewItem>
+                                    </TreeViewItem>
+                                    <TreeViewItem Header="已经离开的访客"  Foreground="#FF4F4F4F"></TreeViewItem>
+                                </TreeView>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer.Content>
+                </ScrollViewer>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7.06*" MinHeight="200" />
+                        <RowDefinition Height="2.94*" MinHeight="197" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Cursor="Hand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.8*" MinHeight="38"/>
+                            <RowDefinition Height="9.2*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0" Background="White">
+                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Width="90" ToolTip="对话记录" Background="#FFF3F3F3" BorderBrush="{x:Null}" Cursor="Hand">
+                                对话记录
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Width="90" ToolTip="访客轨迹" Background="#00DDDDDD" BorderBrush="{x:Null}">
+                                访问轨迹
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Width="90" ToolTip="访客信息" Background="#00DDDDDD" BorderBrush="{x:Null}">
+                                访客信息
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Width="90" ToolTip="历史记录" Background="#00DDDDDD" BorderBrush="{x:Null}">
+                                历史记录
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignRaisedLightButton}" Width="90" ToolTip="星公告" Background="#00DDDDDD" BorderBrush="{x:Null}" HorizontalAlignment="Left">
+                                星公告
+                            </Button>
+                        </DockPanel>
+                        <ScrollViewer Background="#FFF3F3F3" Grid.Row="1" x:Name="scrolls" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <ScrollViewer.Content>
+                                <!-- x:Name="numberedItemsStackPanel" Orientation="Horizontal" -->
+                                <StackPanel x:Name="ChatingContent" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <Label Content="17:58:30 admin正在为您服务" HorizontalAlignment="Center" Margin="0,10,0,10" Background="White" Width="210" HorizontalContentAlignment="Center" Foreground="#FFAAA4A4"/>
+                                    <!--<DockPanel HorizontalAlignment="Left" Margin="0,10,8,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" VerticalAlignment="Top"/>
+                                        <StackPanel VerticalAlignment="Top">
+                                            <Label Content="18:13:30" HorizontalAlignment="Stretch" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" />
+                                            <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="-5,0,0,0">
+                                                <Image Width="32" Margin="0,-7,0,0"  Source="../Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                                                <RichTextBox MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Top" AllowDrop="True" Padding="2" Margin="-18,0,0,0" Background="White" HorizontalContentAlignment="Stretch" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True">
+                                                    <FlowDocument Background="White">
+                                                        <Paragraph>
+                                                            <Run Text="所所所" />
+                                                        </Paragraph>
+                                                    </FlowDocument>
+                                                </RichTextBox>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DockPanel>
+
+                                    <DockPanel HorizontalAlignment="Left" Margin="0,10,8,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" VerticalAlignment="Top"/>
+                                        <StackPanel VerticalAlignment="Top">
+                                            <Label Content="18:13:30" HorizontalAlignment="Stretch" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" />
+                                            <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="-5,0,0,0">
+                                                <Image Width="32" Margin="0,-7,0,0"  Source="../Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                                                <RichTextBox MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Top" AllowDrop="True" Padding="2" Margin="-18,0,0,0" Background="White" HorizontalContentAlignment="Stretch" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True">
+                                                    <FlowDocument Background="White">
+                                                        <Paragraph>
+                                                            <Run Text="所所所" />
+                                                        </Paragraph>
+                                                    </FlowDocument>
+                                                </RichTextBox>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DockPanel>
+
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <StackPanel VerticalAlignment="Top">
+                                            <Label Content="18:13:30" HorizontalAlignment="Right" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" />
+                                            <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,0,0">
+                                                <RichTextBox MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Top" Margin="0,0,-20,0" AutoWordSelection="False" Padding="2" IsDocumentEnabled="False" Background="White" HorizontalContentAlignment="Right" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True">
+                                                    <FlowDocument>
+                                                        <Paragraph>
+                                                            <Image Source="https://video.yestar.com/chat_desktop_face_0.gif" Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_0.gif" Margin="0,0,0,-5"/>
+                                                            <Run xml:lang="zh-cn">大萨达撒大厦多阿萨按时大大萨达萨达萨达是大萨达萨达萨达萨达ad阿萨大萨达撒多啊实打实阿萨大厦大阿萨德萨达阿萨德阿萨德阿萨撒是阿萨</Run>
+                                                        </Paragraph>
+                                                    </FlowDocument>
+                                                </RichTextBox>
+                                                <Image Width="32" Margin="0,-5,-5,0"  Source="../Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" VerticalAlignment="Top"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <StackPanel VerticalAlignment="Top">
+                                            <Label Content="18:13:30" HorizontalAlignment="Right" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" />
+                                            <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,0,0">
+                                                <RichTextBox MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Top" Margin="0,0,-20,0" AutoWordSelection="False" Padding="2" IsDocumentEnabled="False" Background="White" HorizontalContentAlignment="Right" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True">
+                                                    <FlowDocument>
+                                                        <Paragraph>
+                                                            <Image Source="https://video.yestar.com/chat_1585720203073_msg.jpg" Width="300" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+                                                        </Paragraph>
+                                                    </FlowDocument>
+                                                </RichTextBox>
+                                                <Image Width="32" Margin="0,-5,-5,0"  Source="../Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" VerticalAlignment="Top"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="阿萨大萨达撒多撒" Height="30" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="9,5,9,5" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" HorizontalAlignment="Right" Margin="0,0,-55,0" />
+                                        <Image Width="32" Source="pack://application:,,,/Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,-68,5"/>
+                                        <Label Content="18:13:30" Foreground="#FF666666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,30"/>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="阿萨大萨达撒多撒" Height="30" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="9,5,9,5" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" HorizontalAlignment="Right" Margin="0,0,-55,0" />
+                                        <Image Width="32" Source="pack://application:,,,/Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,-68,5"/>
+                                        <Label Content="18:13:30" Foreground="#FF666666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,30"/>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                    </DockPanel>-->
+                                </StackPanel>
+                            </ScrollViewer.Content>
+                        </ScrollViewer>
+                    </Grid>
+                    <RichTextBox Visibility="Collapsed" Name="MsgRichTextBoxTemp" MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Top" Margin="0,0,-20,0" AutoWordSelection="False" Padding="2" IsDocumentEnabled="False" Background="White" HorizontalContentAlignment="Right" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run xml:lang="zh-cn"></Run>
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <materialDesign:DialogHost x:Name="FaceDialogHost" DialogClosing="Face_OnDialogClosing" DialogMargin="8" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Margin="170,0,0,150">
+                        <materialDesign:DialogHost.DialogContent>
+                            <StackPanel Margin="16,16,12,16">
+                                <WrapPanel  Width="300">
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_0.gif" Uid="微笑" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_0.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_1.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_1.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_2.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_2.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_3.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_3.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_4.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_4.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_5.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_5.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_6.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_6.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_7.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_7.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_8.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_8.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_9.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_9.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_10.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_10.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_11.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_11.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_12.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_12.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_13.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_13.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_14.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_14.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_15.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_15.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_16.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_16.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_17.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_17.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_18.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_18.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_19.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_19.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_20.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_20.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_21.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_21.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_22.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_22.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_23.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_23.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_24.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_24.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_25.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_25.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_26.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_26.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_27.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_27.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_28.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_28.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_29.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_29.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_30.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_30.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_31.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_31.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_32.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_32.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_33.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_33.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_34.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_34.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_35.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_35.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_36.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_36.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_37.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_37.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_38.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_38.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_39.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_39.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_40.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_40.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_41.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_41.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_42.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_42.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_43.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_43.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_44.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_44.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_45.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_45.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_46.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_46.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_47.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_47.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_48.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_48.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_49.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_49.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_50.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_50.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_51.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_51.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_52.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_52.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_53.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_53.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_54.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_54.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_55.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_55.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_56.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_56.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_57.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_57.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_58.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_58.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_59.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_59.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_60.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_60.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_61.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_61.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_62.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_62.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_63.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_63.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_64.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_64.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_65.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_65.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                    <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_66.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                                        <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_66.gif" Margin="-13,0,-13,0"/>
+                                    </Button>
+                                </WrapPanel>
+                                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsDefault="True"
+                                        Margin="0 8 8 0"
+                                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                                        <Button.CommandParameter>
+                                            <system:Boolean>True</system:Boolean>
+                                        </Button.CommandParameter>
+                                        ACCEPT
+                                    </Button>
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsCancel="True"
+                                        Margin="0 8 8 0"
+                                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                                        <Button.CommandParameter>
+                                            <system:Boolean>False</system:Boolean>
+                                        </Button.CommandParameter>
+                                        CANCEL
+                                    </Button>
+                                </StackPanel>-->
+                            </StackPanel>
+                        </materialDesign:DialogHost.DialogContent>
+                        <Button x:Name="FaceHappy" Content="萨达" Background="{x:Null}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" BorderBrush="{x:Null}" Cursor="Hand" Visibility="Collapsed"/>
+                    </materialDesign:DialogHost>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition MaxHeight="32"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Grid.Row="0" Background="#FFFBFBFB">
+                            <Button BorderBrush="{x:Null}" Click="Test_Button_Click"  Background="{x:Null}" Cursor="Hand" Height="28" Width="32" HorizontalAlignment="Left">
+                                <Image Source="pack://application:,,,/Resources/tk_emoji_icon.png" Margin="-13,0,-13,0"/>
+                            </Button>
+                            <Button BorderBrush="{x:Null}" Click="Upload_Image_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_picture_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_shock_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}" Name="PrintScreen" Click="Print_Screen"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_scrshot_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_word_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_voice_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_file_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_good_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_trans_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                                <Image  Source="../Resources/tk_text_icon.png" Margin="-13,0,-13,0" />
+                            </Button>
+                        </DockPanel>
+                        <Grid Grid.Row="1" Background="White">
+                            <Grid.RowDefinitions>
+                                <RowDefinition MinHeight="112"/>
+                                <RowDefinition MaxHeight="46" />
+                            </Grid.RowDefinitions>
+                            <RichTextBox Grid.Row="0" Name="ChatingContentMsg" AcceptsReturn="False" KeyDown="ChatingContentMsg_KeyDown" BorderThickness="0,0,0,0" Padding="10,10,10,10" ScrollViewer.CanContentScroll="True">
+                            </RichTextBox>
+                            <!--<TextBox x:Name="ChatingContentMsg" KeyDown="ChatingContentMsg_KeyDown" Grid.Row="0" TextWrapping="Wrap" AcceptsReturn="False" BorderThickness="0,0,0,0" ScrollViewer.CanContentScroll="True" Padding="10,10,10,10" />-->
+                            <!--<RichTextBox x:Name="ChatingContentMsg" Grid.Row="0" KeyDown="ChatingContentMsg_KeyDown" AcceptsReturn="False" BorderThickness="0,0,0,0" ScrollViewer.CanContentScroll="True" Padding="10,10,10,10"></RichTextBox>-->
+                            <DockPanel Grid.Row="1" MaxHeight="46">
+                                <Button  Width="80" HorizontalAlignment="Right" Height="26" Content="发送" Background="#FF108BFE" Foreground="White" FontSize="16" BorderThickness="0,0,0,0" Margin="0,10,10,10" Click="Button_Click" Cursor="Hand"/>
+                            </DockPanel>
+                        </Grid>
+                    </Grid>
+                    <GridSplitter Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="1" />
+                </Grid>
+                <Grid Grid.Column="2" Background="#FFFAFAFA">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7.06*" MinHeight="473"/>
+                        <RowDefinition Height="2.94*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <DockPanel>
+                            <Button Style="{DynamicResource RightButtonStyle}" Height="26" Width="82" Content="常用语" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FF1F91FE" BorderThickness="0,0,0,0" Margin="7,7,12,7" Foreground="White" />
+                            <Button Style="{DynamicResource RightButtonStyle}" Height="26" Width="82" Content="访客名片" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,7,0,0" BorderThickness="0,0,0,0" BorderBrush="{x:Null}" Background="#00DDDDDD" />
+                        </DockPanel>
+                        <DockPanel>
+                            <TextBox Style="{DynamicResource RightSearchTextBoxStyle}" Width="190" Height="29" Text="搜索常用语" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="7,0,5,0" BorderThickness="0,0,0,0" Background="#FFE8E9E9"/>
+                            <ComboBox Template="{DynamicResource ScopeOfActionComboBoxTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Foreground="White">
+                                <ComboBoxItem Content="公用+自己" IsSelected="True" Foreground="Black"/>
+                                <ComboBoxItem Content="公用" Foreground="Black"/>
+                                <ComboBoxItem Content="自己" Foreground="Black"/>
+                            </ComboBox>
+                        </DockPanel>
+                        <StackPanel>
+                            <StackPanel Margin="0,5,0,0">
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="问候" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="致歉" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="等待" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="感谢" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="介绍" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="展示" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="获取信息" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image  Width="16" Source="../Resources/greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                    <Label Content="报价" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    <Grid Grid.Row="1" Background="#FFFAFAFA">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1.62*"/>
+                            <RowDefinition Height="6.64*"/>
+                            <RowDefinition Height="1.72*"/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="快捷常用语" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Background="White"/>
+                        <ListBox Grid.Row="1" ScrollViewer.CanContentScroll="True" Background="Transparent" BorderThickness="0,0,0,0">
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                            <ListBoxItem Content="娃哈哈"/>
+                        </ListBox>
+                        <Label Grid.Row="2" Content="版本号 1.0.0.0" HorizontalAlignment="Right" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Foreground="#E0666666" />
+                    </Grid>
+                </Grid>
+                <GridSplitter Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="1" />
+                <GridSplitter Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" />
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

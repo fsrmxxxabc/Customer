@@ -1,0 +1,842 @@
+﻿<Window x:Class="Customer.Home"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Customer"
+        xmlns:shell="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+        xmlns:themes ="clr-namespace:Customer.Theme"
+        mc:Ignorable="d"
+        Icon="../Resources/chat_desktop_top_icons.png"
+        Title="Yestar 客服聊天分析系统" Background="#FF1F91FE" WindowStartupLocation="CenterScreen" Height="800" Width="1300" VerticalAlignment="Center" Style="{StaticResource Style.Window.Universal}"
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    <Window.Resources>
+        <!-- searchstyle -->
+        <Style x:Key="SearchBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="#FFABAdB3"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border CornerRadius="14" x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- tree view -->
+        <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid Width="16" Height="16"  Background="Transparent">
+                            <Path x:Name="ExpandPath"
+                                  HorizontalAlignment="Left" 
+                                  VerticalAlignment="Center" 
+                                  Margin="0"
+                                  Fill="{TemplateBinding Foreground}"
+                                 Data="M 4 0 L 8 4 L 4 8 Z"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Data" TargetName="ExpandPath" Value="M 0 4 L 8 4 L 4 8 Z"/>
+                                <Setter Property="Fill" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#4f4f4f"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                <Setter Property="Fill" TargetName="ExpandPath" Value="#4f4f4f"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="False"/>
+                                    <Condition Property="IsChecked" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Stroke" TargetName="ExpandPath" Value="#4f4f4f"/>
+                                <Setter Property="Fill" TargetName="ExpandPath" Value="#4f4f4f"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TreeViewItemFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ListTreeViewItemStyle" TargetType="{x:Type TreeViewItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Padding" Value="1,0,0,0"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource TreeViewItemFocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeViewItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition MinWidth="19" Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <ToggleButton x:Name="Expander" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ExpandCollapseToggleStyle}"/>
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Grid.Column="1" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                                <ContentPresenter x:Name="PART_Header" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost" Grid.ColumnSpan="2" Grid.Column="1" Grid.Row="1"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="false">
+                                <Setter Property="Visibility" TargetName="ItemsHost" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter Property="Visibility" TargetName="Expander" Value="Hidden"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <!--<Setter Property="Background" TargetName="Bd" Value="#e2edf9"/>-->
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true"/>
+                                    <Condition Property="IsSelectionActive" Value="false"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="VirtualizingPanel.IsVirtualizing" Value="true">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- content label -->
+        <Style x:Key="ContLabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- right button  -->
+
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" SnapsToDevicePixels="true" StrokeThickness="1" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RightButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="#FFDDDDDD"/>
+            <Setter Property="BorderBrush" Value="#FF707070"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="5" x:Name="border" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- right search textBox style -->
+        <SolidColorBrush x:Key="RightSearchTextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="RightSearchTextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="RightSearchTextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style x:Key="RightSearchTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource RightSearchTextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource RightSearchTextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource RightSearchTextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--  scope of action combox style  -->
+        <LinearGradientBrush x:Key="ComboBox.Static.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FF1F91FE" Offset="1.0"/>
+            <!--<GradientStop Color="#FF1F91FE" Offset="1.0"/>-->
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Static.Border" Color="#FFACACAC"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Static.Glyph" Color="#FF606060"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Border" Color="#FFABADB3"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Button.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Static.Editable.Button.Border" Color="Transparent"/>
+        <LinearGradientBrush x:Key="ScopeOfComboBox.MouseOver.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FF1F91FE" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Glyph" Color="#FF000000"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Border" Color="#FF7EB4EA"/>
+        <LinearGradientBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Button.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FF1F91FE" Offset="0.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ScopeOfComboBox.MouseOver.Editable.Button.Border" Color="#FF7EB4EA"/>
+        <LinearGradientBrush x:Key="ScopeOfComboBox.Pressed.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFDAECFC" Offset="0.0"/>
+            <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Border" Color="#FF569DE5"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Glyph" Color="#FF000000"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Editable.Border" Color="#FF569DE5"/>
+        <LinearGradientBrush x:Key="ScopeOfComboBox.Pressed.Editable.Button.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFDAEBFC" Offset="0.0"/>
+            <GradientStop Color="#FFC4E0FC" Offset="1.0"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Pressed.Editable.Button.Border" Color="#FF569DE5"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Background" Color="#FFF0F0F0"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Border" Color="#FFD9D9D9"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Glyph" Color="#FFBFBFBF"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Border" Color="#FFBFBFBF"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Button.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="ScopeOfComboBox.Disabled.Editable.Button.Border" Color="Transparent"/>
+        <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="ClickMode" Value="Press"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border CornerRadius="5" x:Name="templateRoot" Background="{StaticResource ComboBox.Static.Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{StaticResource ScopeOfComboBox.Static.Border}" SnapsToDevicePixels="true">
+                            <Border x:Name="splitBorder" BorderThickness="1" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0" SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
+                                <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" Fill="{StaticResource ScopeOfComboBox.Static.Glyph}" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center"/>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Static.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Static.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Static.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Static.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ScopeOfComboBox.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Border}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.MouseOver.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ScopeOfComboBox.Pressed.Glyph}"/>
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Border}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Pressed.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Fill" TargetName="arrow" Value="{StaticResource ScopeOfComboBox.Disabled.Glyph}"/>
+                            </Trigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Border}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Border}"/>
+                                <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Button.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ScopeOfComboBox.Disabled.Editable.Button.Border}"/>
+                            </MultiDataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="ScopeOfActionComboBoxTemplate" TargetType="{x:Type ComboBox}">
+            <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+                </Grid.ColumnDefinitions>
+                <Popup x:Name="PART_Popup" AllowsTransparency="true" Grid.ColumnSpan="2" IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="1" Placement="Bottom" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                    <theme:SystemDropShadowChrome x:Name="shadow" Color="Transparent" MinWidth="{Binding ActualWidth, ElementName=templateRoot}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                        <Border x:Name="dropDownBorder" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}">
+                            <ScrollViewer x:Name="DropDownScrollViewer">
+                                <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
+                                    <Canvas x:Name="canvas" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
+                                        <Rectangle x:Name="opaqueRect" Fill="{Binding Background, ElementName=dropDownBorder}" Height="{Binding ActualHeight, ElementName=dropDownBorder}" Width="{Binding ActualWidth, ElementName=dropDownBorder}"/>
+                                    </Canvas>
+                                    <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </Border>
+                    </theme:SystemDropShadowChrome>
+                </Popup>
+                <ToggleButton x:Name="toggleButton" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Grid.ColumnSpan="2" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource ComboBoxToggleButton}"/>
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" Content="{TemplateBinding SelectionBoxItem}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
+                    <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
+                    <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
+                </Trigger>
+                <Trigger Property="HasItems" Value="false">
+                    <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsGrouping" Value="true"/>
+                        <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                </MultiTrigger>
+                <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+                    <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
+                    <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+    <themes:UniversalWindowStyle.TitleBar>
+        <themes:UniversalTitleBar ForegroundColor="White" InactiveForegroundColor="#7FFFFFFF"
+                                  ButtonHoverForeground="White" ButtonHoverBackground="#3FFFFFFF"
+                                  ButtonPressedForeground="#7FFFFFFF" ButtonPressedBackground="#3F000000" />
+    </themes:UniversalWindowStyle.TitleBar>
+    <Grid>
+        <StackPanel Margin="22,11,0,667" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Image Width="68" Height="68" Source="https://video.yestar.com/chat_customer_service_old.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Image Width="22" Height="22" Source="state_online_icon.png" HorizontalAlignment="Left" Margin="75,-29,0,0"/>
+        </StackPanel>
+        <DockPanel Margin="0,9,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Image Source="https://video.yestar.com/chat_desktop_back_chat_icon.png" HorizontalAlignment="Left" VerticalAlignment="Center" Width="46" Margin="0,0,33,0"/>
+            <Label Content="返回对话" HorizontalAlignment="Left" FontSize="13" Foreground="#FFECE9E9" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+            <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_message_icon.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+            <Label Content="消息记录" HorizontalAlignment="Left" Foreground="#FFECE9E9" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+            <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_customer_car_icon.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+            <Label Content="查看名片" Foreground="#FFECE9E9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+            <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_customer_leave_msg_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+            <Label Content="访客留言" HorizontalAlignment="Left" Foreground="#FFECE9E9" VerticalAlignment="Bottom" Margin="-88,76,0,0" />
+            <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_type_log_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+            <Label Content="渠道记录" Foreground="#FFECE9E9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+            <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_customer_service_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+            <Label Content="星客服" Width="60"  HorizontalAlignment="Left" Foreground="#FFECE9E9" HorizontalContentAlignment="Center" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+            <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_cloud_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,33,0"/>
+            <Label Content="智能云平台" Foreground="#FFECE9E9" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-88,76,0,0"/>
+            <Image Width="46" Height="46" Source="https://video.yestar.com/chat_desktop_seting_center_icon.png"  HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label Content="设置中心" HorizontalAlignment="Left"  Foreground="#FFF5EFEF" VerticalAlignment="Bottom" Margin="-51,76,0,0"/>
+        </DockPanel>
+        <StackPanel Background="White" Margin="0,133,0,-4">
+            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel CanHorizontallyScroll="True">
+                    <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,11,0,0">
+                        <TextBox Style="{DynamicResource SearchBoxStyle}" HorizontalAlignment="Center" Height="29" Width="207" VerticalAlignment="Center" Text="   搜索访客" ToolTip="搜索访客" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Margin="12,0,0,0" />
+                        <Image Source="find_mr_icon.png" Width="16" HorizontalAlignment="Left" Margin="-23,0,38,0"/>
+                        <Label Content="筛选" VerticalAlignment="Center" FontSize="14" Background="{x:Null}" Margin="-7,0,0,0"/>
+                        <Image Width="18" Source="screen_mr_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-83,0,0,0"/>
+                    </DockPanel>
+                    <DockPanel Width="290" HorizontalAlignment="Left" Margin="0,9,0,0">
+                        <Button Width="60" Height="41" Content="对话中" FontSize="14" Foreground="#FF2486FF" BorderThickness="0,0,0,3" BorderBrush="#FF2486FF" HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="47,0,0,0">
+                            <Button.Background>
+                                <ImageBrush Stretch="None" TileMode="FlipY" ImageSource="moredw_blue_icon.png">
+                                    <ImageBrush.Transform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform/>
+                                            <TranslateTransform X="26"/>
+                                        </TransformGroup>
+                                    </ImageBrush.Transform>
+                                </ImageBrush>
+                            </Button.Background>
+                        </Button>
+                        <Button Height="41" Content="最近联系" Width="60" HorizontalAlignment="Right" Margin="0,0,47,0" BorderThickness="0,0,0,0">
+                            <Button.Background>
+                                <SolidColorBrush Color="#FFDDDDDD" Opacity="0"/>
+                            </Button.Background>
+                        </Button>
+                    </DockPanel>
+                    <StackPanel Orientation="Vertical" Width="290" HorizontalAlignment="Left" Margin="0,10,0,0">
+                        <TreeView BorderThickness="0,0,0,0">
+                            <TreeView.Background>
+                                <SolidColorBrush Color="White" Opacity="0"/>
+                            </TreeView.Background>
+                            <TreeViewItem Style="{DynamicResource ListTreeViewItemStyle}" Header="等待应答" FontSize="14" Foreground="#FF4F4F4F" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0,0,0,0" Margin="20,9,0,9">
+                                <TreeViewItem Header="测试" Foreground="#FF4F4F4F" Margin="0,7,0,0"/>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource ListTreeViewItemStyle}" Header="自己" FontSize="14" Foreground="#FF4F4F4F" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0,0,0,0" Margin="22,9,0,9">
+                                <TreeViewItem Header="对话中的访客" Foreground="#FF4F4F4F" Margin="0,7,0,0" >
+                                    <DockPanel>
+                                        <Image Width="24" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="上海/官网-1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="12" Foreground="#FF4F4F4F" Margin="0,1,0,13"/>
+                                        <Label Content="我想咨询一下玻尿酸注射" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Background="#00B8B8B8" Foreground="#FFB8B8B8" Margin="-76,0,0,0" />
+                                        <Label Content="17:01" FontSize="10" Foreground="#FF939393"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <Image Width="24" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="上海/官网-1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="12" Foreground="#FF4F4F4F" Margin="0,1,0,13"/>
+                                        <Label Content="我想咨询一下玻尿酸注射" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Background="#00B8B8B8" Foreground="#FFB8B8B8" Margin="-76,0,0,0" />
+                                        <Label Content="17:01" FontSize="10" Foreground="#FF939393"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <Image Width="24" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="上海/官网-1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="12" Foreground="#FF4F4F4F" Margin="0,1,0,13"/>
+                                        <Label Content="我想咨询一下玻尿酸注射" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Background="#00B8B8B8" Foreground="#FFB8B8B8" Margin="-76,0,0,0" />
+                                        <Label Content="17:01" FontSize="10" Foreground="#FF939393"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <Image Width="24" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="上海/官网-1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="12" Foreground="#FF4F4F4F" Margin="0,1,0,13"/>
+                                        <Label Content="我想咨询一下玻尿酸注射" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Background="#00B8B8B8" Foreground="#FFB8B8B8" Margin="-76,0,0,0" />
+                                        <Label Content="17:01" FontSize="10" Foreground="#FF939393"/>
+                                    </DockPanel>
+                                </TreeViewItem>
+                                <TreeViewItem Header="转接中的访客"  Foreground="#FF4F4F4F" Margin="0,7,0,0" />
+                                <TreeViewItem Header="主动邀请的访客"  Foreground="#FF4F4F4F" Margin="0,7,0,0"/>
+                            </TreeViewItem>
+                            <TreeViewItem Style="{DynamicResource ListTreeViewItemStyle}" Header="已经离开的访客" FontSize="14" Foreground="#FF4F4F4F" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0,0,0,0" Margin="22,9,0,9">
+                                <TreeViewItem Header="测试" Foreground="#FF4F4F4F" Margin="0,7,0,0"/>
+                            </TreeViewItem>
+                        </TreeView>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Height="656" HorizontalAlignment="Left" Background="#FFF3F3F3" VerticalAlignment="Bottom">
+                    <DockPanel Height="38" HorizontalAlignment="Left" VerticalAlignment="Top" Background="White" Width="698">
+                        <Button Content="对话记录" Width="81" VerticalAlignment="Stretch" BorderThickness="0,0,0,0" Background="#FFF3F3F3" />
+                        <Button Content="访问轨迹" Width="81" VerticalAlignment="Stretch" BorderThickness="0,0,0,0" Background="#00DDDDDD"/>
+                        <Button Content="访客信息" Width="81" VerticalAlignment="Stretch" BorderThickness="0,0,0,0" Background="#00DDDDDD"/>
+                        <Button Content="历史记录" Width="81" VerticalAlignment="Stretch" BorderThickness="0,0,0,0" Background="#00DDDDDD"/>
+                        <Button Content="星公告" Width="81" VerticalAlignment="Stretch" BorderThickness="0,0,0,0" Background="#00DDDDDD" HorizontalAlignment="Left"/>
+                    </DockPanel>
+                    <StackPanel Height="435">
+                        <ScrollViewer x:Name="scrolls" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Height="435">
+                            <ScrollViewer.Content>
+                                <!-- x:Name="numberedItemsStackPanel" Orientation="Horizontal" -->
+                                <StackPanel ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <Label Content="17:58:30 admin正在为您服务" HorizontalAlignment="Center" Margin="0,10,0,5" Background="White" Width="210" HorizontalContentAlignment="Center" Foreground="#FFAAA4A4"/>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="你好" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="三生三世" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="找你大爷干哈" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="5,0,-51,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" HorizontalAlignment="Center" />
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="-16,0,-113,13"/>
+                                        <Label Content="18:13:30" Foreground="#FF666666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,38"/>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="找你大爷干哈" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="5,0,-51,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" HorizontalAlignment="Center" />
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="-16,0,-113,13"/>
+                                        <Label Content="18:13:30" Foreground="#FF666666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,38"/>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="找你大爷干哈" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="5,0,-51,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" HorizontalAlignment="Center" />
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="-16,0,-113,13"/>
+                                        <Label Content="18:13:30" Foreground="#FF666666" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,38"/>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="少时诵诗书" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="的点点滴滴" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="请求请求群" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Left" Margin="5,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png"/>
+                                        <Label Content="18:13:30" Margin="0,0,0,14" Height="55" Foreground="#FF666666" FontSize="14"/>
+                                        <Image Width="32" Source="chat_desktop_triangle_icon.png" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="-65,0,0,12"/>
+                                        <Label Style="{DynamicResource ContLabelStyle}" Content="哒哒哒哒哒哒" Height="28" VerticalAlignment="Bottom" Background="White" HorizontalContentAlignment="Center" Padding="5,5,5,5" Margin="-50,0,3,8" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF2B2B2B" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </ScrollViewer.Content>
+                        </ScrollViewer>
+                    </StackPanel>
+                    <StackPanel>
+                        <DockPanel Height="32" Background="#FFFBFBFB">
+                            <Image Width="20" Source="tk_emoji_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="16,0,16,0"  />
+                            <Image Width="20" Source="tk_picture_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_shock_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_scrshot_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_word_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_voice_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_file_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_good_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_trans_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                            <Image Width="20" Source="tk_text_icon.png" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,16,0" />
+                        </DockPanel>
+                        <StackPanel Background="White">
+                            <TextBox Height="103" TextWrapping="Wrap" AcceptsReturn="True" BorderThickness="0,0,0,0" ScrollViewer.CanContentScroll="True" Width="698" Padding="10,10,10,10" />
+                            <Button Width="80" HorizontalAlignment="Right" Height="26" Content="发送" Background="#FF108BFE" Foreground="White" FontSize="16" BorderThickness="0,0,0,0" Margin="0,10,10,10"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <DockPanel>
+                    <StackPanel>
+                        <StackPanel Height="473" VerticalAlignment="Top">
+                            <DockPanel>
+                                <Button Style="{DynamicResource RightButtonStyle}" Height="26" Width="82" Content="常用语" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#FF1F91FE" BorderThickness="0,0,0,0" Margin="7,7,12,7" Foreground="White" />
+                                <Button Style="{DynamicResource RightButtonStyle}" Height="26" Width="82" Content="访客名片" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,7,0,0" BorderThickness="0,0,0,0" BorderBrush="{x:Null}" Background="#00DDDDDD" />
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBox Style="{DynamicResource RightSearchTextBoxStyle}" Width="190" Height="29" Text="搜索常用语" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="7,0,5,0" BorderThickness="0,0,0,0" Background="#FFE8E9E9"/>
+                                <ComboBox Template="{DynamicResource ScopeOfActionComboBoxTemplate}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Foreground="White">
+                                    <ComboBoxItem Content="公用+自己" IsSelected="True" Foreground="Black"/>
+                                    <ComboBoxItem Content="公用" Foreground="Black"/>
+                                    <ComboBoxItem Content="自己" Foreground="Black"/>
+                                </ComboBox>
+                            </DockPanel>
+                            <StackPanel>
+                                <StackPanel Margin="0,5,0,0">
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="问候" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="致歉" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="等待" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="感谢" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="介绍" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="展示" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="获取信息" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Image  Width="16" Source="greet_file_icon.png" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                                        <Label Content="报价" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    </DockPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Background="#FFFAFAFA" Height="182">
+                            <Label Height="30" Content="快捷常用语" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Background="White"/>
+                            <ListBox Height="127" ScrollViewer.CanContentScroll="True" Background="Transparent" BorderThickness="0,0,0,0">
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                                <ListBoxItem Content="娃哈哈"/>
+                            </ListBox>
+                            <Label Content="版本号 1.0.0.0" HorizontalAlignment="Right" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Foreground="#E0666666" />
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>

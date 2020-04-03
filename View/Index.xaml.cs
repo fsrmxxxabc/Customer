@@ -214,8 +214,6 @@ namespace Customer.View
                 };
                 image.Resources.Source.
             }*/
-
-            //Stream stream = ;
             
             Window win = new Window { SizeToContent = SizeToContent.WidthAndHeight, ResizeMode = ResizeMode.NoResize };
 

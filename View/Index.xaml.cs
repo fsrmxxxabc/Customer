@@ -106,8 +106,8 @@ namespace Customer.View
         {
             if (e.Key == Key.Return)
             {
-                RichTextBoxUtils.SaveRichTextBoxContent = "../../../Resources/Content/Content.rtf";
-                _= new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
+                //RichTextBoxUtils.SaveRichTextBoxContent = "../../../Resources/Content/Content.rtf";
+                //_= new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
                 int width = CommonUtil.GetRichTextBoxWidth(RichTextBoxUtils.GetRichTextBoxToString,RichTextBoxUtils.GetRichTextBoxCont);
                 IndexUtil.SendData(SetCustparam(RichTextBoxUtils.GetRichTextBoxToString, width));
             }

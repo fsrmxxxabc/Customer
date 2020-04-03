@@ -46,6 +46,9 @@ namespace Customer.View
             LoadChatingInfo();
         }
 
+        /// <summary>
+        /// 初始化聊天框
+        /// </summary>
         public void LoadChatingInfo()
         {
             _ = new WebSocketUtil();
@@ -130,6 +133,11 @@ namespace Customer.View
             }
         }
 
+        /// <summary>
+        /// 表情处理事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Face_WX_Emoji(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -169,6 +177,11 @@ namespace Customer.View
             }
         }
 
+        /// <summary>
+        /// 截屏事件处理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Print_Screen(object sender, RoutedEventArgs e)
         {
             Hide();
@@ -176,6 +189,10 @@ namespace Customer.View
             screenCaputre.StartCaputre(30, lastSize);
         }
 
+        /// <summary>
+        /// 你懂得
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -185,12 +202,22 @@ namespace Customer.View
             }
         }
 
+        /// <summary>
+        /// 取消截屏后的操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnScreenCaputreCancelled(object sender, System.EventArgs e)
         {
             Show();
             Focus();
         }
 
+        /// <summary>
+        /// 获取截取的屏幕并上传到七牛云
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnScreenCaputred(object sender, RisCaptureLib.ScreenCaputredEventArgs e)
         {
             //set last size

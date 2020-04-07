@@ -957,7 +957,7 @@
                             <Button BorderBrush="{x:Null}" Click="Upload_Image_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
                                 <Image  Source="../Resources/tk_picture_icon.png" Margin="-13,0,-13,0" />
                             </Button>
-                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                            <Button BorderBrush="{x:Null}" Click="Send_Shake_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
                                 <Image  Source="../Resources/tk_shock_icon.png" Margin="-13,0,-13,0" />
                             </Button>
                             <Button BorderBrush="{x:Null}" Name="PrintScreen" Click="Print_Screen"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">

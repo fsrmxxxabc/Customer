@@ -13,6 +13,7 @@ using Customer.Until.Qiniu;
 using Newtonsoft.Json.Linq;
 using System.Windows.Media.Imaging;
 using System.IO;
+using Customer.until;
 
 namespace Customer.View
 {
@@ -53,7 +54,7 @@ namespace Customer.View
         {
             _ = new WebSocketUtil();
             this.ChatingContent.Children.Clear();
-            this.ChatingContent.Children.Add(new IndexUtil(FormattableString.Invariant($"{DateTime.Now}") + " admin正在为您服务").Label);
+            this.ChatingContent.Children.Add(new IndexUtil(FormattableString.Invariant($"{DateTime.Now}")+" "+ConfigUntil.GetSettingString("userName")+ "正在为您服务").Label);
         }
 
         private void DockPanel_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -237,6 +238,11 @@ namespace Customer.View
             CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);
 
             Show();
+        }
+
+        private void Send_Shake_Click(object sender, RoutedEventArgs e)
+        {
+            new IndexUtil(new LabelShake().GetLabels).SendData();
         }
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Customer.Until
 {
@@ -81,6 +80,13 @@ namespace Customer.Until
             this.Label = new Label();
         }
 
+        public IndexUtil(Label label)
+        {
+            this.label = label;
+            ContUtil contUtil = new ContUtil(this.label.Content.ToString());
+            JObjects = contUtil.ContParam;
+        }
+
         /// <summary>
         /// 客服发送消息方法体，此方法体可以直接发送消息给访客
         /// </summary>
@@ -96,6 +102,17 @@ namespace Customer.Until
             }));
         }
 
+        /// <summary>
+        /// 发送消息的重载（发送抖屏）
+        /// </summary>
+        public void SendData()
+        {
+            App.Current.Dispatcher.Invoke((Action)(() => { View.Index.Chatingmsg.Children.Add(this.label);WebSocketUtil.WebSockets.Send(JObjects.ToString()); }));
+        }
+
+        /// <summary>
+        /// 初始化在线用户列表
+        /// </summary>
         public void LoadUserList()
         {
             App.Current.Dispatcher.Invoke((Action)(() =>

@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using System.Windows.Media.Imaging;
 using System.IO;
 using Customer.until;
+using System.Runtime.InteropServices;
 
 namespace Customer.View
 {
@@ -54,7 +55,7 @@ namespace Customer.View
         {
             _ = new WebSocketUtil();
             this.ChatingContent.Children.Clear();
-            this.ChatingContent.Children.Add(new IndexUtil(FormattableString.Invariant($"{DateTime.Now}")+" "+ConfigUntil.GetSettingString("userName")+ "正在为您服务").Label);
+            this.ChatingContent.Children.Add(new IndexUtil(FormattableString.Invariant($"{DateTime.Now}") + " " + ConfigUntil.GetSettingString("userName") + "正在为您服务").Label);
         }
 
         private void DockPanel_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -89,7 +90,7 @@ namespace Customer.View
             };
         }
 
-        private CustParam SetCustparam(string content,int width)
+        private CustParam SetCustparam(string content, int width)
         {
             return new CustParam()
             {
@@ -112,7 +113,7 @@ namespace Customer.View
             {
                 //RichTextBoxUtils.SaveRichTextBoxContent = "../../../Resources/Content/Content.rtf";
                 //_= new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
-                int width = CommonUtil.GetRichTextBoxWidth(RichTextBoxUtils.GetRichTextBoxToString,RichTextBoxUtils.GetRichTextBoxCont);
+                int width = CommonUtil.GetRichTextBoxWidth(RichTextBoxUtils.GetRichTextBoxToString, RichTextBoxUtils.GetRichTextBoxCont);
                 IndexUtil.SendData(SetCustparam(RichTextBoxUtils.GetRichTextBoxToString, width));
             }
         }
@@ -170,11 +171,11 @@ namespace Customer.View
                     TokenUtil = null
                 };
 
-                string ret = qiniuUtil.ChunkUpload("chat_"+CommonUtil.GetTimeSecond()+"_msg."+CommonUtil.GetFileExtra(openFileDialog.SafeFileName),openFileDialog.FileName);
+                string ret = qiniuUtil.ChunkUpload("chat_" + CommonUtil.GetTimeSecond() + "_msg." + CommonUtil.GetFileExtra(openFileDialog.SafeFileName), openFileDialog.FileName);
 
                 JObject jObject = JObject.Parse(ret);
 
-                CommonUtil.SetImage(QiniuUtil.Domain+jObject["key"]);
+                CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);
             }
         }
 
@@ -185,9 +186,10 @@ namespace Customer.View
         /// <param name="e"></param>
         private void Print_Screen(object sender, RoutedEventArgs e)
         {
-            Hide();
-            Thread.Sleep(300);
-            screenCaputre.StartCaputre(30, lastSize);
+            //Hide();
+            //Thread.Sleep(300);
+            //screenCaputre.StartCaputre(30, lastSize);
+            setCapture();
         }
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace Customer.View
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            if ( e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control) && e.Key ==  Key.Y)
+            if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control) && e.Key == Key.Y)
             {
                 CommonUtil.Clicked(this.PrintScreen);
             }
@@ -231,7 +233,7 @@ namespace Customer.View
                 BitMapToStream = screenCaputre.GetBitMap,
             };
 
-            string ret = qiniuUtil.StreamUpload("chat_screen_caputre" + CommonUtil.GetTimeSecond() + "_msg" );
+            string ret = qiniuUtil.StreamUpload("chat_screen_caputre" + CommonUtil.GetTimeSecond() + "_msg");
 
             JObject jObject = JObject.Parse(ret);
 
@@ -244,5 +246,8 @@ namespace Customer.View
         {
             new IndexUtil(new LabelShake().GetLabels).SendData();
         }
+
+        [DllImport("ScreenShot.dll")]
+        private static extern void setCapture();
     }
 }

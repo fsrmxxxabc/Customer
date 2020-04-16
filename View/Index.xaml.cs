@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using Customer.until;
 using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace Customer.View
 {
@@ -189,7 +190,10 @@ namespace Customer.View
             //Hide();
             //Thread.Sleep(300);
             //screenCaputre.StartCaputre(30, lastSize);
-            setCapture();
+            //setCapture();
+            //byte[] data = new byte[100];
+            //showDialog(new WindowInteropHelper(this).Handle, ref data[0]);
+            Interaction.StartScreenShot();
         }
 
         /// <summary>
@@ -246,8 +250,5 @@ namespace Customer.View
         {
             new IndexUtil(new LabelShake().GetLabels).SendData();
         }
-
-        [DllImport("ScreenShot.dll")]
-        private static extern void setCapture();
     }
 }

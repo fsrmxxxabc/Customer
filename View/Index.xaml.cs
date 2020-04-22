@@ -20,7 +20,7 @@ using System.Windows.Interop;
 namespace Customer.View
 {
     /// <summary>
-    /// Index.xaml 的交互逻辑
+    /// Index.xaml
     /// </summary>
     public partial class Index : Window
     {
@@ -40,8 +40,8 @@ namespace Customer.View
         public Index()
         {
             InitializeComponent();
-            screenCaputre.ScreenCaputred += OnScreenCaputred;
-            screenCaputre.ScreenCaputreCancelled += OnScreenCaputreCancelled;
+            //screenCaputre.ScreenCaputred += OnScreenCaputred;
+            //screenCaputre.ScreenCaputreCancelled += OnScreenCaputreCancelled;
             Chatingmsg = this.ChatingContent;
             ChatingContMsg = this.ChatingContentMsg;
             MsgRichTextBoxTemps = this.MsgRichTextBoxTemp;
@@ -49,10 +49,7 @@ namespace Customer.View
             LoadChatingInfo();
         }
 
-        /// <summary>
-        /// 初始化聊天框
-        /// </summary>
-        public void LoadChatingInfo()
+        public void LoadChatingInfo() 
         {
             _ = new WebSocketUtil();
             this.ChatingContent.Children.Clear();
@@ -249,6 +246,12 @@ namespace Customer.View
         private void Send_Shake_Click(object sender, RoutedEventArgs e)
         {
             new IndexUtil(new LabelShake().GetLabels).SendData();
+        }
+
+        private int FinishedScreenShot(object sender, RoutedEventArgs e)
+        {
+            Trace.WriteLine(121221);
+            return 1212;
         }
     }
 }

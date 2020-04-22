@@ -106,8 +106,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Resources\QtDll\" />
-  </ItemGroup>
-
 </Project>

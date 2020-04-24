@@ -16,6 +16,7 @@ using System.IO;
 using Customer.until;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using Customer.Until.Speech;
 
 namespace Customer.View
 {
@@ -184,12 +185,6 @@ namespace Customer.View
         /// <param name="e"></param>
         private void Print_Screen(object sender, RoutedEventArgs e)
         {
-            //Hide();
-            //Thread.Sleep(300);
-            //screenCaputre.StartCaputre(30, lastSize);
-            //setCapture();
-            //byte[] data = new byte[100];
-            //showDialog(new WindowInteropHelper(this).Handle, ref data[0]);
             Interaction.StartScreenShot();
         }
 
@@ -252,6 +247,14 @@ namespace Customer.View
         {
             Trace.WriteLine(121221);
             return 1212;
+        }
+
+        private void Auto_Click(object sender, RoutedEventArgs e)
+        {
+            SpRecognition recognition = SpRecognition.instance();
+
+            recognition.BeginRec();
+
         }
     }
 }

@@ -15,9 +15,20 @@
     <PackageIconUrl />
     <StartupObject>Customer.App</StartupObject>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -49,6 +60,14 @@
     <None Remove="View\tk_trans_icon.png" />
     <None Remove="View\tk_voice_icon.png" />
     <None Remove="View\tk_word_icon.png" />
+    <COMReference Include="SpeechLib.dll">
+      <Guid>c866ca3a-32f7-11d2-9602-00c04f8ee628</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>4</VersionMinor>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
     <None Include="D:\Desktop\星快通\图片\chat_desktop_top_icons.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
@@ -96,11 +115,6 @@
   <ItemGroup>
     <Reference Include="RisCaptureLib">
       <HintPath>..\..\CaptureScreenSln\RisCaptureLib\bin\Debug\RisCaptureLib.dll</HintPath>
-      <Private>true</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="System.Speech">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Speech.dll</HintPath>
       <Private>true</Private>
       <EmbedInteropTypes>false</EmbedInteropTypes>
     </Reference>

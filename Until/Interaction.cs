@@ -43,28 +43,6 @@ namespace Customer.Until
 
         }
 
-        private static Bitmap CopyFromScreenSnapshot(Rect region)
-        {
-            Rectangle sourceRect = region.ToRectangle();
-
-            Trace.WriteLine(sourceRect);
-
-            Rectangle destRect = new Rectangle(0, 0, sourceRect.Width, sourceRect.Height);
-
-            var bitmap = new Bitmap(sourceRect.Width, sourceRect.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            using (Graphics g = Graphics.FromImage(bitmap))
-            {
-                g.DrawImage(screenSnapshot, destRect, sourceRect, GraphicsUnit.Pixel);
-            }
-
-            return bitmap;
-        }
-
-        private static Rectangle ToRectangle(this Rect rect)
-        {
-            return new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
-        }
-
         private static void CallBackScreent(string msg)
         {
             QiniuUtil qiniuUtil = new QiniuUtil()
@@ -79,11 +57,7 @@ namespace Customer.Until
 
             Trace.WriteLine(jObject);
 
-            App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.SystemIdle, (ThreadStart)delegate ()
-            {
-                View.Index.ChatingContMsg.Focus();
-                CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);
-            });
+            CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);
         }
 
         public static void StartScreenShot()

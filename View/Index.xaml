@@ -966,7 +966,7 @@
                             <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
                                 <Image  Source="../Resources/tk_word_icon.png" Margin="-13,0,-13,0" />
                             </Button>
-                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                            <Button BorderBrush="{x:Null}" Click="Auto_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
                                 <Image  Source="../Resources/tk_voice_icon.png" Margin="-13,0,-13,0" />
                             </Button>
                             <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Speech;
-using System.Speech.Recognition;
 using System.Globalization;
 using System.Windows;
 
@@ -12,7 +10,7 @@ namespace Customer.Until.Speech
     {
         private string Txt { set; get; }
 
-        private SpeechRecognitionEngine Speech { get; set; }
+       /* private SpeechRecognitionEngine Speech { get; set; }
 
         private DictationGrammar Dictation { get; set; }
 
@@ -43,7 +41,7 @@ namespace Customer.Until.Speech
         /// 初始化识别引擎
         /// </summary>
         /// <param name="fg"></param>
-        public void SRecognition(string[] fg)
+       /* public void SRecognition(string[] fg)
         {
             SetConfig = fg;
         }
@@ -111,7 +109,7 @@ namespace Customer.Until.Speech
         /// 语音识别类库初始化
         /// </summary>
         /// <param name="s"></param>
-        void InitializeSpeechRecognitionEngine(string[] s)
+        public void InitializeSpeechRecognitionEngine(string[] s)
         {
             // Create and load a dictation grammar.
             //recognizer.LoadGrammar(new DictationGrammar());
@@ -146,6 +144,6 @@ namespace Customer.Until.Speech
                 case "选择绿色":
                     break;
             }
-        }
+        }*/
     }
 }

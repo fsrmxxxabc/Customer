@@ -1,7 +1,6 @@
 ﻿using Qiniu.Http;
 using Qiniu.Storage;
 using Qiniu.Util;
-using System.Diagnostics;
 using System.IO;
 
 namespace Customer.Until.Qiniu

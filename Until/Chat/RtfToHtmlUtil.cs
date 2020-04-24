@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Customer.Until.Chat
 {
-    class RtfToHtmlUtil
+    class RtfToHtmlUtil : IRtfToHtmlUtil
     {
         public Document Documents { get; set; }
 
@@ -13,11 +13,15 @@ namespace Customer.Until.Chat
             GetHtmlContent = path;
         }
 
+        public RtfToHtmlUtil()
+        {
+        }
+
         public Document SetDocument
         {
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     Documents = value;
                 }
@@ -28,7 +32,7 @@ namespace Customer.Until.Chat
         {
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     SetDocument = new Document();
                     Documents.LoadFromFile(@value);
@@ -51,7 +55,7 @@ namespace Customer.Until.Chat
 
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     RtfToHtml = value;
                 }

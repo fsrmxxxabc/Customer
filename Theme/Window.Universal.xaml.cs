@@ -56,7 +56,9 @@ namespace Customer.Theme
         }
         private static void OnTitleBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+#pragma warning disable CA1303 // 请不要将文本作为本地化参数传递
             if (e.NewValue is null) throw new NotSupportedException("TitleBar property should not be null.");
+#pragma warning restore CA1303 // 请不要将文本作为本地化参数传递
         }
 
         private static void OnButtonStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

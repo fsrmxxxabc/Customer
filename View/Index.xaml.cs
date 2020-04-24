@@ -16,7 +16,6 @@ using System.IO;
 using Customer.until;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using Customer.Until.Speech;
 
 namespace Customer.View
 {
@@ -194,11 +193,15 @@ namespace Customer.View
         /// <param name="e"></param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            base.OnKeyDown(e);
-            if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control) && e.Key == Key.Y)
+            if(e != null)
             {
-                CommonUtil.Clicked(this.PrintScreen);
+                base.OnKeyDown(e);
+                if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control) && e.Key == Key.Y)
+                {
+                    CommonUtil.Clicked(this.PrintScreen);
+                }
             }
+            
         }
 
         /// <summary>
@@ -251,10 +254,14 @@ namespace Customer.View
 
         private void Auto_Click(object sender, RoutedEventArgs e)
         {
-            SpRecognition recognition = SpRecognition.instance();
-
-            recognition.BeginRec();
-
+            /*Process[] processes = Process.GetProcessesByName("sapisvr");
+            if (processes.Length > 0)
+            {
+                //processes[0].CloseMainWindow();
+                //processes[0].Kill();
+            }*/
+            /*recognition = SpRecognition.instance();
+            recognition.BeginRec();*/
         }
     }
 }

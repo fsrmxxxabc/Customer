@@ -105,14 +105,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="RisCaptureLib">
-      <HintPath>..\..\CaptureScreenSln\RisCaptureLib\bin\Debug\RisCaptureLib.dll</HintPath>
-      <Private>true</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
+    <Reference Include="BaiDuTrans">
+      <HintPath>..\BaiDuTrans\BaiDuTrans\bin\Debug\netcoreapp3.1\BaiDuTrans.dll</HintPath>
     </Reference>
     <Reference Include="SpRecognition">
       <HintPath>..\SpRecognition\SpRecognition\bin\Release\netcoreapp3.1\SpRecognition.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interface\" />
   </ItemGroup>
 
 </Project>

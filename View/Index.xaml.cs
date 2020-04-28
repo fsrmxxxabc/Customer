@@ -1,21 +1,16 @@
 ﻿using Customer.Until;
 using System;
 using System.Diagnostics;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using Customer.Until.Chat;
 using Microsoft.Win32;
 using Customer.Until.Qiniu;
 using Newtonsoft.Json.Linq;
-using System.Windows.Media.Imaging;
-using System.IO;
 using Customer.until;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
+using SpRecognition;
+using System.Windows.Documents;
 
 namespace Customer.View
 {
@@ -33,32 +28,42 @@ namespace Customer.View
 
         public static RichTextBox MsgRichTextBoxTemps { get; set; }
 
-        private readonly RisCaptureLib.ScreenCaputre screenCaputre = new RisCaptureLib.ScreenCaputre();
+        private SpRecognition.SpRecognition Recognition = new SpRecognition.SpRecognition();
 
-        private Size? lastSize;
+        private bool boolRec = false;
+
+        private Paragraph paragraph = new Paragraph();
 
         public Index()
         {
             InitializeComponent();
-            //screenCaputre.ScreenCaputred += OnScreenCaputred;
-            //screenCaputre.ScreenCaputreCancelled += OnScreenCaputreCancelled;
+
             Chatingmsg = this.ChatingContent;
+
             ChatingContMsg = this.ChatingContentMsg;
+
             MsgRichTextBoxTemps = this.MsgRichTextBoxTemp;
+
             RichTextBoxUtils = new RichTextBoxUtil(this.ChatingContentMsg);
+
+            Recognition.GetAutoComment += AutoResult;
+
             LoadChatingInfo();
         }
 
-        public void LoadChatingInfo() 
+        public void LoadChatingInfo()
         {
             _ = new WebSocketUtil();
+
             this.ChatingContent.Children.Clear();
+
             this.ChatingContent.Children.Add(new IndexUtil(FormattableString.Invariant($"{DateTime.Now}") + " " + ConfigUntil.GetSettingString("userName") + "正在为您服务").Label);
         }
 
         private void DockPanel_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             DockPanel dockPanel = (DockPanel)sender;
+
             Trace.WriteLine(dockPanel.Uid);
         }
 
@@ -110,7 +115,7 @@ namespace Customer.View
             if (e.Key == Key.Return)
             {
                 //RichTextBoxUtils.SaveRichTextBoxContent = "../../../Resources/Content/Content.rtf";
-                //_= new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
+                _ = new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
                 int width = CommonUtil.GetRichTextBoxWidth(RichTextBoxUtils.GetRichTextBoxToString, RichTextBoxUtils.GetRichTextBoxCont);
                 IndexUtil.SendData(SetCustparam(RichTextBoxUtils.GetRichTextBoxToString, width));
             }
@@ -193,7 +198,7 @@ namespace Customer.View
         /// <param name="e"></param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if(e != null)
+            if (e != null)
             {
                 base.OnKeyDown(e);
                 if (e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Control) && e.Key == Key.Y)
@@ -201,44 +206,7 @@ namespace Customer.View
                     CommonUtil.Clicked(this.PrintScreen);
                 }
             }
-            
-        }
 
-        /// <summary>
-        /// 取消截屏后的操作
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnScreenCaputreCancelled(object sender, System.EventArgs e)
-        {
-            Show();
-            Focus();
-        }
-
-        /// <summary>
-        /// 获取截取的屏幕并上传到七牛云
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnScreenCaputred(object sender, RisCaptureLib.ScreenCaputredEventArgs e)
-        {
-            //set last size
-            lastSize = new Size(e.Bmp.Width, e.Bmp.Height);
-
-            QiniuUtil qiniuUtil = new QiniuUtil()
-            {
-                ConfigUtil = new Qiniu.Storage.Config(),
-                TokenUtil = null,
-                BitMapToStream = screenCaputre.GetBitMap,
-            };
-
-            string ret = qiniuUtil.StreamUpload("chat_screen_caputre" + CommonUtil.GetTimeSecond() + "_msg");
-
-            JObject jObject = JObject.Parse(ret);
-
-            CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);
-
-            Show();
         }
 
         private void Send_Shake_Click(object sender, RoutedEventArgs e)
@@ -246,22 +214,32 @@ namespace Customer.View
             new IndexUtil(new LabelShake().GetLabels).SendData();
         }
 
-        private int FinishedScreenShot(object sender, RoutedEventArgs e)
+        private void AutoResult(object sender, StringEventArgs e)
         {
-            Trace.WriteLine(121221);
-            return 1212;
+            paragraph.ContentStart.Paragraph.Inlines.Add(new Run(e.Str));
+            _ = new InlineUIContainer(new TextBlock() { Text=e.Str}, this.ChatingContentMsg.Selection.Start);
+            //this.ChatingContentMsg.Document.Blocks.Add(paragraph);
+            this.ChatingContentMsg.ScrollToEnd();
+            this.ChatingContentMsg.Focus();
         }
 
         private void Auto_Click(object sender, RoutedEventArgs e)
         {
-            /*Process[] processes = Process.GetProcessesByName("sapisvr");
-            if (processes.Length > 0)
+            Recognition.instance();
+
+            if (!boolRec)
             {
-                //processes[0].CloseMainWindow();
-                //processes[0].Kill();
-            }*/
-            /*recognition = SpRecognition.instance();
-            recognition.BeginRec();*/
+                Recognition.BeginRec();
+                boolRec = true;
+            }
+            else
+            {
+                Recognition.CloseRec();
+                boolRec = false;
+            }
+            
         }
+
+
     }
 }

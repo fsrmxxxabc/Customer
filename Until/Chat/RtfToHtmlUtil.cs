@@ -13,10 +13,6 @@ namespace Customer.Until.Chat
             GetHtmlContent = path;
         }
 
-        public RtfToHtmlUtil()
-        {
-        }
-
         public Document SetDocument
         {
             set

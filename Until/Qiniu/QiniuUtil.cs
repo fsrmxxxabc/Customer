@@ -87,9 +87,8 @@ namespace Customer.Until.Qiniu
         /// </summary>
         /// <param name="key">自定义文件名</param>
         /// <param name="path">文件地址</param>
-        /// <param name="type">类别，1表示不覆盖上传，2表示覆盖上传</param>
         /// <returns></returns>
-        public string FormUpload(string key,string path,int type)
+        public string FormUpload(string key,string path)
         {
             FormUploader formUploader = new FormUploader(ConfigUtil);
             HttpResult httpResult = formUploader.UploadFile(path, key, TokenUtil, null);

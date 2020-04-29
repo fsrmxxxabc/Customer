@@ -1,0 +1,224 @@
+﻿<Page x:Class="Customer.View.Pages.FacePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Customer.View.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:gif="http://wpfanimatedgif.codeplex.com"
+      mc:Ignorable="d"
+      Title="FacePage" Width="300">
+
+    <Grid>
+        <materialDesign:DialogHost x:Name="FaceDialogHost" DialogClosing="Face_OnDialogClosing" DialogMargin="8" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Margin="-30,0,0,150">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16,16,12,16">
+                    <WrapPanel  Width="300">
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_0.gif" Uid="微笑" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_0.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_1.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_1.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_2.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_2.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_3.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_3.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_4.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_4.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_5.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_5.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_6.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_6.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_7.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_7.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_8.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_8.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_9.gif" Command="materialDesign:DialogHost.CloseDialogCommand"  Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_9.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_10.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_10.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_11.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_11.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_12.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_12.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_13.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_13.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_14.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_14.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_15.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_15.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_16.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_16.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_17.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_17.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_18.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_18.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_19.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_19.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_20.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_20.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_21.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_21.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_22.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_22.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_23.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_23.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_24.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_24.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_25.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_25.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_26.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_26.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_27.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_27.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_28.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_28.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_29.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_29.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_30.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_30.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_31.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_31.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_32.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_32.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_33.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_33.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_34.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_34.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_35.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_35.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_36.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_36.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_37.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_37.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_38.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_38.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_39.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_39.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_40.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_40.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_41.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_41.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_42.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_42.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_43.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_43.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_44.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_44.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_45.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_45.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_46.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_46.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_47.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_47.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_48.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_48.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_49.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_49.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_50.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_50.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_51.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_51.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_52.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_52.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_53.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_53.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_54.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_54.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_55.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_55.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_56.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_56.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_57.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_57.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_58.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_58.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_59.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_59.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_60.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_60.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_61.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_61.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_62.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_62.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_63.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_63.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_64.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_64.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_65.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_65.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                        <Button BorderBrush="{x:Null}" Click="Face_WX_Emoji" DataContext="https://video.yestar.com/chat_desktop_face_66.gif" Command="materialDesign:DialogHost.CloseDialogCommand" Background="{x:Null}" Cursor="Hand" HorizontalAlignment="Left">
+                            <Image Width="20" gif:ImageBehavior.AnimatedSource="https://video.yestar.com/chat_desktop_face_66.gif" Margin="-13,0,-13,0"/>
+                        </Button>
+                    </WrapPanel>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+            <Button x:Name="FaceHappy" Content="萨达" Background="{x:Null}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" BorderBrush="{x:Null}" Cursor="Hand" Visibility="Collapsed"/>
+        </materialDesign:DialogHost>
+    </Grid>
+</Page>

@@ -1,0 +1,51 @@
+﻿<Page x:Class="Customer.View.Pages.TransPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:Customer.View.Pages"
+      mc:Ignorable="d"
+      Title="TransPage" Width="370">
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style x:Key="FIcon" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="/Resources/Icon/#iconfont"></Setter>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+    <Grid>
+        <materialDesign:DialogHost x:Name="TransDialogHost" DialogClosing="Face_OnDialogClosing" DialogMargin="8" HorizontalAlignment="Left" VerticalAlignment="Bottom" HorizontalContentAlignment="Left" Margin="25,0,0,32" Cursor="Hand">
+            <materialDesign:DialogHost.DialogContent>
+                <DockPanel Height="44" Width="370" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="源语言： " VerticalAlignment="Center" HorizontalAlignment="Center" Margin="16,0,0,0"/>
+                    <ComboBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Foreground="Black">
+                        <ComboBoxItem Content="自动选择" DataContext="auto"  IsSelected="True" Foreground="Black"/>
+                        <ComboBoxItem Content="中文" DataContext="zh" Foreground="Black"/>
+                        <ComboBoxItem Content="英语" DataContext="en" Foreground="Black"/>
+                        <ComboBoxItem Content="粤语" DataContext="yue" Foreground="Black"/>
+                        <ComboBoxItem Content="文言文" DataContext="wyw" Foreground="Black"/>
+                        <ComboBoxItem Content="日文" DataContext="jp" Foreground="Black"/>
+                        <ComboBoxItem Content="韩语" DataContext="kor" Foreground="Black"/>
+                        <ComboBoxItem Content="法语" DataContext="fra" Foreground="Black"/>
+                    </ComboBox>
+                    <TextBlock Text=" &#xe60d;" Style="{StaticResource FIcon}" />
+                    <TextBlock Text=" 目标语言： " HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <ComboBox x:Name="ToLanguage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Foreground="Black">
+                        <ComboBoxItem Content="英语" DataContext="en" IsSelected="True" Foreground="Black"/>
+                        <ComboBoxItem Content="粤语" DataContext="yue" Foreground="Black"/>
+                        <ComboBoxItem Content="文言文" DataContext="wyw" Foreground="Black"/>
+                        <ComboBoxItem Content="日语" DataContext="jp" Foreground="Black"/>
+                        <ComboBoxItem Content="韩语" DataContext="kor" Foreground="Black"/>
+                        <ComboBoxItem Content="法语" DataContext="fra" Foreground="Black"/>
+                    </ComboBox>
+                    <Button x:Name="BDTrans" Click="Trans_Click" Content="翻译" Width="76" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Cursor="Hand"/>
+                </DockPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+    </Grid>
+</Page>

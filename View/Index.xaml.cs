@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Customer.until;
 using SpRecognition;
 using System.Windows.Documents;
+using Customer.View.Pages;
 
 namespace Customer.View
 {
@@ -33,6 +34,10 @@ namespace Customer.View
         private bool boolRec = false;
 
         private Paragraph paragraph = new Paragraph();
+
+        private readonly FacePage Face = new FacePage();
+
+        private readonly TransPage BdTrans = new TransPage();
 
         public Index()
         {
@@ -121,37 +126,17 @@ namespace Customer.View
             }
         }
 
-        private void Face_OnDialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        private void Face_Button_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void Test_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.FaceDialogHost.IsOpen.Equals(false))
+            if (Face.FaceDialogHost.IsOpen.Equals(false))
             {
-                CommonUtil.Clicked(this.FaceHappy);
+                Face.FaceDialogHost.IsOpen = true;
             }
             else
             {
-                this.FaceDialogHost.IsOpen = false;
+                Face.FaceDialogHost.IsOpen = false;
             }
-        }
-
-        /// <summary>
-        /// 表情处理事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Face_WX_Emoji(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            this.ChatingContentMsg.Focus();
-            CommonUtil.SetGifImage(button.DataContext.ToString());
-            /*if (image != null)
-            {
-                _ = new InlineUIContainer(image, this.ChatingContentMsg.Selection.Start);
-            }*/
+            this.ButClick.Content = Face;
         }
 
         /// <summary>
@@ -240,6 +225,10 @@ namespace Customer.View
             
         }
 
-
+        private void Baidu_Trans(object sender, RoutedEventArgs e)
+        {
+            BdTrans.TransDialogHost.IsOpen = BdTrans.TransDialogHost.IsOpen ? false : true;
+            this.ButClick.Content = BdTrans;
+        }
     }
 }

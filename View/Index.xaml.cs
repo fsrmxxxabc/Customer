@@ -12,6 +12,7 @@ using Customer.until;
 using SpRecognition;
 using System.Windows.Documents;
 using Customer.View.Pages;
+using System.IO;
 
 namespace Customer.View
 {
@@ -30,8 +31,6 @@ namespace Customer.View
         public static RichTextBox MsgRichTextBoxTemps { get; set; }
 
         private SpRecognition.SpRecognition Recognition = new SpRecognition.SpRecognition();
-
-        private bool boolRec = false;
 
         private Paragraph paragraph = new Paragraph();
 
@@ -53,7 +52,7 @@ namespace Customer.View
 
             Recognition.GetAutoComment += AutoResult;
 
-            LoadChatingInfo();
+            //LoadChatingInfo();
         }
 
         public void LoadChatingInfo()
@@ -196,6 +195,7 @@ namespace Customer.View
 
         private void Send_Shake_Click(object sender, RoutedEventArgs e)
         {
+            CommonUtil.ShakeScreen(this);
             new IndexUtil(new LabelShake().GetLabels).SendData();
         }
 
@@ -212,23 +212,51 @@ namespace Customer.View
         {
             Recognition.instance();
 
-            if (!boolRec)
-            {
-                Recognition.BeginRec();
-                boolRec = true;
-            }
-            else
+            /*if (boolRec)
             {
                 Recognition.CloseRec();
                 boolRec = false;
-            }
-            
+                return;
+            }*/
+
+            Recognition.BeginRec();
+            //boolRec = true;
+
+
         }
 
         private void Baidu_Trans(object sender, RoutedEventArgs e)
         {
             BdTrans.TransDialogHost.IsOpen = BdTrans.TransDialogHost.IsOpen ? false : true;
             this.ButClick.Content = BdTrans;
+        }
+
+        private void File_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Filter = "所有文件|*.zip;*.rar;*.xls;*.txt;*.psd;*.csv;*.doc"
+            };
+
+            if ((bool)openFileDialog.ShowDialog())
+            {
+                using (FileStream file = File.OpenRead(openFileDialog.FileName))
+                {
+                    string str = new FileUtil().GetIconName(CommonUtil.GetFileExtra(openFileDialog.SafeFileName));
+                    MessageBox.Show(str + ": " + FormattableString.Invariant($"{file.Length/1024}")+" KB");
+                }
+                /*QiniuUtil qiniuUtil = new QiniuUtil()
+                {
+                    ConfigUtil = new Qiniu.Storage.Config(),
+                    TokenUtil = null
+                };
+
+                string ret = qiniuUtil.ChunkUpload("chat_" + CommonUtil.GetTimeSecond() + "_msg." + CommonUtil.GetFileExtra(openFileDialog.SafeFileName), openFileDialog.FileName);
+
+                JObject jObject = JObject.Parse(ret);
+
+                CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);*/
+            }
         }
     }
 }

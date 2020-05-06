@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Customer.Until;
 using BaiDuTrans;
+using Newtonsoft.Json.Linq;
 
 namespace Customer.View.Pages
 {
@@ -32,11 +33,14 @@ namespace Customer.View.Pages
 
         private void Trans_Click(object sender, RoutedEventArgs e)
         {
-            RichTextBoxUtil richTextBoxUtil = new RichTextBoxUtil(Index.ChatingContMsg);
-            string cont = richTextBoxUtil.GetRichTextBoxCont;
-            ComboBoxItem comboBoxItem  = (ComboBoxItem)this.ToLanguage.SelectedItem;
-            string ret = BaiduTrans.Trans(cont,comboBoxItem.DataContext.ToString());
-            MessageBox.Show(ret);
+            string str = Index.ChatingContMsg.Selection.Text;
+            if (!String.IsNullOrEmpty(str))
+            {
+                ComboBoxItem comboBoxItem = (ComboBoxItem)this.ToLanguage.SelectedItem;
+                string ret = BaiduTrans.Trans(str, comboBoxItem.DataContext.ToString());
+                JObject jObject = JObject.Parse(ret);
+                Index.ChatingContMsg.Selection.Text = jObject["trans_result"][0]["dst"].ToString();
+            }
         }
     }
 }

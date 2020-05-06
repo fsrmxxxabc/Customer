@@ -35,8 +35,9 @@
                     </ComboBox>
                     <TextBlock Text=" &#xe60d;" Style="{StaticResource FIcon}" />
                     <TextBlock Text=" 目标语言： " HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <ComboBox x:Name="ToLanguage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Foreground="Black">
+                    <ComboBox x:Name="ToLanguage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Foreground="Black" Cursor="Hand">
                         <ComboBoxItem Content="英语" DataContext="en" IsSelected="True" Foreground="Black"/>
+                        <ComboBoxItem Content="中文" DataContext="zh" Foreground="Black"/>
                         <ComboBoxItem Content="粤语" DataContext="yue" Foreground="Black"/>
                         <ComboBoxItem Content="文言文" DataContext="wyw" Foreground="Black"/>
                         <ComboBoxItem Content="日语" DataContext="jp" Foreground="Black"/>

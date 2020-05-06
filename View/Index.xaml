@@ -502,6 +502,15 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
+            
+            <!-- 阿里巴巴矢量图标定义 -->
+            <Style x:Key="FIcon" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="pack://application:,,,/Resources/Icon/#iconfont"></Setter>
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <themes:UniversalWindowStyle.TitleBar>
@@ -624,6 +633,24 @@
                                 <!-- x:Name="numberedItemsStackPanel" Orientation="Horizontal" -->
                                 <StackPanel x:Name="ChatingContent" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <Label Content="17:58:30 admin正在为您服务" HorizontalAlignment="Center" Margin="0,10,0,10" Background="White" Width="210" HorizontalContentAlignment="Center" Foreground="#FFAAA4A4"/>
+                                    <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
+                                        <StackPanel VerticalAlignment="Top">
+                                            <Label Content="18:13:30" HorizontalAlignment="Right" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" />
+                                            <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,0,0">
+                                                <RichTextBox MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Center" Margin="0,0,-20,0" AutoWordSelection="False" Padding="2" IsDocumentEnabled="False" Background="White" HorizontalContentAlignment="Right" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True" HorizontalAlignment="Stretch">
+                                                    <FlowDocument>
+                                                        <Paragraph>
+                                                            <Run xml:lang="zh-cn">2020年月值班表技术部 - 张维东.xls</Run>
+                                                            <TextBlock Text="&#xe61e;" Style="{StaticResource FIcon}" FontSize="50" Foreground="#FFBB6424"/>
+                                                            <Run xml:lang="zh-cn">4.5 KB</Run>
+                                                        </Paragraph>
+                                                    </FlowDocument>
+                                                </RichTextBox>
+                                                <Image Width="32" Margin="0,-5,-5,0"  Source="../Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" VerticalAlignment="Top"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </ScrollViewer.Content>
                         </ScrollViewer>
@@ -660,7 +687,7 @@
                             <Button BorderBrush="{x:Null}" Click="Auto_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
                                 <Image  Source="../Resources/tk_voice_icon.png" Margin="-13,0,-13,0" />
                             </Button>
-                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
+                            <Button BorderBrush="{x:Null}" Click="File_Click" Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
                                 <Image  Source="../Resources/tk_file_icon.png" Margin="-13,0,-13,0" />
                             </Button>
                             <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">

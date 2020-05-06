@@ -38,6 +38,27 @@ namespace Customer.Until
             return FormattableString.Invariant($"{Convert.ToInt64(timeSpan.TotalMilliseconds)}");
         }
 
+        public static void ShakeScreen(Window window)
+        {
+            int i, j, k; //定义三个变量
+            for (i = 1; i <= 5; i++) //循环次数
+            {
+                for (j = 1; j <= 5; j++)
+                {
+
+                    window.Top += 1;
+                    window.Left += 1;
+                    System.Threading.Thread.Sleep(3); //当前线程指定挂起的时间
+                }
+                for (k = 1; k <= 5; k++)
+                {
+                    window.Top -= 1;
+                    window.Left -= 1;
+                    System.Threading.Thread.Sleep(3);
+                }
+            }
+        }
+
         public static string GetFileExtra(string filename)
         {
             return filename.Split(".")[1];

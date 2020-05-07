@@ -46,6 +46,7 @@
     <None Remove="Resources\chat_login_right_top1.png" />
     <None Remove="Resources\find_mr_icon.png" />
     <None Remove="Resources\greet_file_icon.png" />
+    <None Remove="Resources\Icon\iconfont.ttf" />
     <None Remove="Theme\skin_wt_icon.png" />
     <None Remove="View\moredw_blue_icon.png" />
     <None Remove="View\screen_mr_icon.png" />
@@ -75,6 +76,9 @@
     <Resource Include="Resources\chat_login_right_top1.png" />
     <Resource Include="Resources\find_mr_icon.png" />
     <Resource Include="Resources\greet_file_icon.png" />
+    <Resource Include="Resources\Icon\iconfont.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Theme\skin_wt_icon.png" />
     <Resource Include="Resources\moredw_blue_icon.png" />
     <Resource Include="Resources\screen_mr_icon.png" />
@@ -118,9 +122,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\Icon\iconfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Update="Resources\ResourceAll.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceAll.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ResourceAll.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceAll.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

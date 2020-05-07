@@ -30,6 +30,7 @@ namespace Customer.View
 
         public static RichTextBox MsgRichTextBoxTemps { get; set; }
 
+
         private SpRecognition.SpRecognition Recognition = new SpRecognition.SpRecognition();
 
         private Paragraph paragraph = new Paragraph();
@@ -242,8 +243,11 @@ namespace Customer.View
             {
                 using (FileStream file = File.OpenRead(openFileDialog.FileName))
                 {
-                    string str = new FileUtil().GetIconName(CommonUtil.GetFileExtra(openFileDialog.SafeFileName));
-                    MessageBox.Show(str + ": " + FormattableString.Invariant($"{file.Length/1024}")+" KB");
+                    System.Drawing.Bitmap map = new FileUtil().GetIconName(CommonUtil.GetFileExtra(openFileDialog.SafeFileName));
+                    //MessageBox.Show(str + ": " + FormattableString.Invariant($"{file.Length/1024}")+" KB");
+                    FileParam fileParam = new FileParam() { FileIcon = map, UserImg = "https://video.yestar.com/chat_desktop_customer_avatr_img.png", FileName = openFileDialog.SafeFileName, FileSize = map.Size/1024 + " KB" };
+                    this.ChatingContent.Children.Add(fileParam.instance());
+
                 }
                 /*QiniuUtil qiniuUtil = new QiniuUtil()
                 {

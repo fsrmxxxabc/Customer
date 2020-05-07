@@ -641,7 +641,10 @@
                                                     <FlowDocument>
                                                         <Paragraph>
                                                             <Run xml:lang="zh-cn">2020年月值班表技术部 - 张维东.xls</Run>
+                                                            <!--<Image Source="pack://application:,,,/Resources/screen_mr_icon.png" Width="50" />
                                                             <TextBlock Text="&#xe61e;" Style="{StaticResource FIcon}" FontSize="50" Foreground="#FFBB6424"/>
+                                                            -->
+                                                            <Image Source="../Resources/zip.png" Width="32"/>
                                                             <Run xml:lang="zh-cn">4.5 KB</Run>
                                                         </Paragraph>
                                                     </FlowDocument>

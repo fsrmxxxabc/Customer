@@ -16,36 +16,36 @@ namespace Customer.Until.Chat
 
         }
 
-        public string GetIconName(string str)
+        public System.Drawing.Bitmap GetIconName(string str)
         {
             return FileIcon(str);
         }
 
-        private static string GetFileType(FileType fileType)
+        private static System.Drawing.Bitmap GetFileType(FileType fileType)
         {
             switch (fileType)
             {
                 case FileType.zip:
-                    return "&#xe61e;";
+                    return Resources.ResourceAll.zip;
                 case FileType.rar:
-                    return "&#xe61e;";
+                    return Resources.ResourceAll.RAR;
                 case FileType.xls:
-                    return "&#xe669;";
+                    return Resources.ResourceAll.XLSX;
                 case FileType.csv:
-                    return "&#xe669;";
+                    return Resources.ResourceAll.XLSX;
                 case FileType.txt:
-                    return "&#xe63b;";
+                    return Resources.ResourceAll.TXT;
                 case FileType.psd:
-                    return "&#xe61f;";
+                    return Resources.ResourceAll.PSD;
                 case FileType.doc:
-                    return "&#xe66d;";
+                    return Resources.ResourceAll.DOC;
 
                 default:
-                    return "&#xe621;";
+                    return Resources.ResourceAll.weizhiwenjian;
             }
         }
 
-        private static string FileIcon(string str)
+        private static System.Drawing.Bitmap FileIcon(string str)
         {
             return GetFileType((FileType)Enum.Parse(typeof(FileType), str));
         }

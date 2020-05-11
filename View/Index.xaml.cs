@@ -53,7 +53,7 @@ namespace Customer.View
 
             Recognition.GetAutoComment += AutoResult;
 
-            //LoadChatingInfo();
+            LoadChatingInfo();
         }
 
         public void LoadChatingInfo()
@@ -119,10 +119,12 @@ namespace Customer.View
         {
             if (e.Key == Key.Return)
             {
+                RichTextBoxUtil richTextBoxUtil = new RichTextBoxUtil(this.ChatingContentMsg);
+                MessageBox.Show(HtmlFromXamlConverter.ConvertXamlToHtml(richTextBoxUtil.GetRichTextBoxToString));
                 //RichTextBoxUtils.SaveRichTextBoxContent = "../../../Resources/Content/Content.rtf";
-                _ = new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
+                /*_ = new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
                 int width = CommonUtil.GetRichTextBoxWidth(RichTextBoxUtils.GetRichTextBoxToString, RichTextBoxUtils.GetRichTextBoxCont);
-                IndexUtil.SendData(SetCustparam(RichTextBoxUtils.GetRichTextBoxToString, width));
+                IndexUtil.SendData(SetCustparam(RichTextBoxUtils.GetRichTextBoxToString, width));*/
             }
         }
 
@@ -245,7 +247,7 @@ namespace Customer.View
                 {
                     System.Drawing.Bitmap map = new FileUtil().GetIconName(CommonUtil.GetFileExtra(openFileDialog.SafeFileName));
                     //MessageBox.Show(str + ": " + FormattableString.Invariant($"{file.Length/1024}")+" KB");
-                    FileParam fileParam = new FileParam() { FileIcon = map, UserImg = "https://video.yestar.com/chat_desktop_customer_avatr_img.png", FileName = openFileDialog.SafeFileName, FileSize = map.Size/1024 + " KB" };
+                    FileParam fileParam = new FileParam() { FileIcon = map, UserImg = "https://video.yestar.com/chat_desktop_customer_avatr_img.png", FileName = openFileDialog.SafeFileName, FileSize = FormattableString.Invariant($"{file.Length / 1024}") + " KB" };
                     this.ChatingContent.Children.Add(fileParam.instance());
 
                 }

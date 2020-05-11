@@ -606,7 +606,7 @@
                         <RowDefinition Height="7.06*" MinHeight="200" />
                         <RowDefinition Height="2.94*" MinHeight="197" />
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" Cursor="Hand">
+                    <Grid Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0.8*" MinHeight="38"/>
                             <RowDefinition Height="9.2*"/>
@@ -637,18 +637,16 @@
                                         <StackPanel VerticalAlignment="Top">
                                             <Label Content="18:13:30" HorizontalAlignment="Right" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" />
                                             <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,0,0">
-                                                <RichTextBox MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Center" Margin="0,0,-20,0" AutoWordSelection="False" Padding="2" IsDocumentEnabled="False" Background="White" HorizontalContentAlignment="Right" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True" HorizontalAlignment="Stretch">
-                                                    <FlowDocument>
-                                                        <Paragraph>
-                                                            <Run xml:lang="zh-cn">2020年月值班表技术部 - 张维东.xls</Run>
-                                                            <!--<Image Source="pack://application:,,,/Resources/screen_mr_icon.png" Width="50" />
-                                                            <TextBlock Text="&#xe61e;" Style="{StaticResource FIcon}" FontSize="50" Foreground="#FFBB6424"/>
-                                                            -->
-                                                            <Image Source="../Resources/zip.png" Width="32"/>
-                                                            <Run xml:lang="zh-cn">4.5 KB</Run>
-                                                        </Paragraph>
-                                                    </FlowDocument>
-                                                </RichTextBox>
+                                                <StackPanel Width="220" Height="105" Background="white" Margin="0,0,-17,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <DockPanel  HorizontalAlignment="Left" Height="82">
+                                                        <StackPanel Width="150">
+                                                            <TextBlock Padding="5" TextWrapping="Wrap"  Text="2020年2月值班表技术部 - 张维东.xls" MaxWidth="175"/>
+                                                            <Label Content="25 KB"/>
+                                                        </StackPanel>
+                                                        <Image Source="pack://application:,,,/Resources/zip.png" Width="45" />
+                                                    </DockPanel>
+                                                    <Label Content="Yestar桌面版" BorderBrush="#FFDEDDDD" BorderThickness="0,1,0,0"/>
+                                                </StackPanel>
                                                 <Image Width="32" Margin="0,-5,-5,0"  Source="../Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                                             </DockPanel>
                                         </StackPanel>
@@ -661,7 +659,8 @@
                     <RichTextBox Visibility="Collapsed" Name="MsgRichTextBoxTemp" MaxWidth="200" Template="{DynamicResource RichTextBoxTemplate1}" VerticalAlignment="Top" Margin="0,0,-20,0" AutoWordSelection="False" Padding="2" IsDocumentEnabled="False" Background="White" HorizontalContentAlignment="Right" FontSize="14" Foreground="#FF2B2B2B" IsReadOnly="True">
                         <FlowDocument>
                             <Paragraph>
-                                <Run xml:lang="zh-cn"></Run>
+                                <TextBlock Text="阿萨大厦大"/>
+                                <Image Source="https://video.yestar.com/2019/05/23%20100749/xingpai/5ce600750183a.jpg"/>
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>

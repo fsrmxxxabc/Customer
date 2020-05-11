@@ -16,25 +16,24 @@ namespace Customer.Until.Chat
         public void loadFileParam()
         {
             FileIconUtil = FileIcon;
-            DockpanelUtil = DockSecondUtil = new DockPanel();
-            StackpanelUtil = new StackPanel();
-            LabelsUtil = new Label();
-            RichTextBoxUtil = new RichTextBox();
-            ParagraphUtil = new Paragraph();
-            RuntopUtil = RunBottomUtil = new Run();
+            DockThirdUtil = DockpanelUtil = DockSecondUtil = new DockPanel();
+            StackSecondUtil = StackThirdUtil = StackpanelUtil = new StackPanel();
+            LabelSizeUtil = LabelsUtil = new Label();
+            AppName = new Label() { Content = "    Yestar桌面版", BorderBrush = CommonUtil.GetColorBrush(222, 221, 221), BorderThickness = new Thickness(0, 1, 0, 0) };
+            TextFileNameUtil = new TextBlock();
             FileImgUtil = ImgIconUtil = AvarUtil = new Image();
-            FlowDocumentsUtil = new FlowDocument();
         }
 
         public DockPanel instance()
         {
             loadFileParam();
-            Paragraph.Inlines.Add(Runtop);
-            Paragraph.Inlines.Add(FileImg);
-            Paragraph.Inlines.Add(Runbottom);
-            FlowDocuments.Blocks.Add(Paragraph);
-            RichTextBox.Document = FlowDocuments;
-            DockSecond.Children.Add(RichTextBox);
+            StackThird.Children.Add(TextFileName);
+            StackThird.Children.Add(LabelSize);
+            DockThird.Children.Add(StackThird);
+            DockThird.Children.Add(FileImg);
+            StackSecond.Children.Add(DockThird);
+            StackSecond.Children.Add(AppName);
+            DockSecond.Children.Add(StackSecond);
             DockSecond.Children.Add(ImgIcon);
             Stackpanel.Children.Add(Labels);
             Stackpanel.Children.Add(DockSecond);
@@ -51,17 +50,29 @@ namespace Customer.Until.Chat
 
         private DockPanel DockSecond { get; set; }
 
-        private RichTextBox RichTextBox { get; set; }
+        private StackPanel StackSecond { get; set; }
+
+        private DockPanel DockThird { get; set; }
+
+        private StackPanel StackThird { get; set; }
+
+        private TextBlock TextFileName { get; set; }
+
+        private Label LabelSize { get; set; }
+
+        /*private RichTextBox RichTextBox { get; set; }
 
         private FlowDocument FlowDocuments { get; set; }
 
         private Paragraph Paragraph { get; set; }
 
-        private Run Runtop { get; set; }
+        private Run Runtop { get; set; }*/
 
         private Image FileImg { get; set; }
 
-        private Run Runbottom { get; set; }
+        //private Run Runbottom { get; set; }
+
+        private Label AppName { get; set; }
 
         private Image ImgIcon { get; set; }
 
@@ -79,7 +90,7 @@ namespace Customer.Until.Chat
 
         private DockPanel DockpanelUtil
         {
-            set { Dockpanel = new DockPanel() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Margin = new System.Windows.Thickness(0, 10, 8, 0) }; }
+            set { Dockpanel = new DockPanel() { Cursor = System.Windows.Input.Cursors.Hand, HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Margin = new System.Windows.Thickness(0, 10, 8, 0) }; }
         }
 
         private StackPanel StackpanelUtil
@@ -97,7 +108,32 @@ namespace Customer.Until.Chat
             set { DockSecond = new DockPanel() { VerticalAlignment = System.Windows.VerticalAlignment.Stretch, HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Margin = new System.Windows.Thickness(0, 0, 0, 0) }; }
         }
 
-        private RichTextBox RichTextBoxUtil
+        private StackPanel StackSecondUtil
+        {
+            set { StackSecond = new StackPanel() { Width = 220, Height = 105, Background = System.Windows.Media.Brushes.White, Margin = new Thickness(0, 0, -17, 0), HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center }; }
+        }
+
+        private DockPanel DockThirdUtil
+        {
+            set { DockThird = new DockPanel() { HorizontalAlignment = HorizontalAlignment.Left, Height = 82 }; }
+        }
+
+        private StackPanel StackThirdUtil
+        {
+            set { StackThird = new StackPanel() { Width = 165 }; }
+        }
+
+        private TextBlock TextFileNameUtil
+        {
+            set { TextFileName = new TextBlock() { Padding = new Thickness(15, 15, 10, 10), TextWrapping = TextWrapping.Wrap, Text = FileName, MaxWidth = 175 }; }
+        }
+
+        private Label LabelSizeUtil
+        {
+            set { LabelSize = new Label() { Content = FileSize, Margin = new Thickness(11, 0, 0, 0) }; }
+        }
+
+        /*private RichTextBox RichTextBoxUtil
         {
             set { RichTextBox = new RichTextBox() { MaxWidth = 200, Template = View.Index.MsgRichTextBoxTemps.Template, VerticalAlignment = System.Windows.VerticalAlignment.Center, Margin = new System.Windows.Thickness(0, 0, -20, 0), AutoWordSelection = false, Padding = new System.Windows.Thickness(2, 2, 2, 2), IsDocumentEnabled = false, Background = System.Windows.Media.Brushes.White, HorizontalContentAlignment = System.Windows.HorizontalAlignment.Right, FontSize = 14, Foreground = CommonUtil.GetColorBrush(43, 43, 43), IsReadOnly = true, HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch }; }
         }
@@ -115,7 +151,7 @@ namespace Customer.Until.Chat
         private Run RuntopUtil
         {
             set { Runtop = new Run() { Text = FileName, Language = System.Windows.Markup.XmlLanguage.GetLanguage("zh-cn") }; }
-        }
+        }*/
 
         private System.Drawing.Bitmap FileIconUtil
         {
@@ -126,19 +162,20 @@ namespace Customer.Until.Chat
                     IntPtr ip = value.GetHbitmap();
                     FileIconImg = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, Int32Rect.Empty,
     System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                    value.Dispose();
                 }
             }
         }
 
         private Image FileImgUtil
         {
-            set { FileImg = new Image() { Source = FileIconImg, Width = 32 }; }
+            set { FileImg = new Image() { Source = FileIconImg, Width = 45 }; }
         }
 
-        private Run RunBottomUtil
+        /*private Run RunBottomUtil
         {
             set { Runbottom = new Run() { Text = FileSize, Language = System.Windows.Markup.XmlLanguage.GetLanguage("zh-cn") }; }
-        }
+        }*/
 
         private Image ImgIconUtil
         {

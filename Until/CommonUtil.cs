@@ -146,7 +146,8 @@ namespace Customer.Until
                     Image img = new Image
                     {
                         Width = 20,
-                        Source = SetBitImageInfo(value)
+                        Source = SetBitImageInfo(value),
+                        DataContext = value
                     };
 
                     ImageBehavior.SetAnimatedSource(img, img.Source);

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -17,32 +14,6 @@ namespace Customer.Until.Chat
         private CustParam CustParams { get; }
 
         public CustUi CustUis { get; }
-
-        /*public CustInfo(CustParam custParam,string reply)
-        {
-            this.CustParams = custParam;
-
-            CustUis = new CustUi()
-            {
-                UserImage = new Image(),
-                StackPanelf = new StackPanel(),
-                UserTime = new Label(),
-                DockPanelt = new DockPanel(),
-                ArrowIcon = new Image(),
-                UserContent = new RichTextBox()
-            };
-
-            UserImage = ArrowIcon = new Image();
-
-            StackPanelf = new StackPanel();
-
-            UserTime = new Label();
-
-            DockPanelt = new DockPanel();
-
-            UserContent = new RichTextBox();
-
-        }*/
 
         public CustInfo(CustParam custParam)
         {

@@ -18,7 +18,8 @@
         Background="#FF1F91FE"
         mc:Ignorable="d"
         Icon="../Resources/chat_desktop_top_icons.png"
-        Title="Yestar 客服聊天分析系统" WindowStartupLocation="CenterScreen" Height="800" Width="1280" VerticalAlignment="Center"   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+        Title="Yestar 客服聊天分析系统" WindowStartupLocation="CenterScreen" Height="800" Width="1280" VerticalAlignment="Center"   xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
     <!--Background="{DynamicResource MaterialDesignPaper}"  Background="#FF1F91FE"  Style="{StaticResource Style.Window.Universal}-->
     <Window.Resources>
         <ResourceDictionary>
@@ -481,8 +482,8 @@
                         <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
                     </Trigger>
                 </ControlTemplate.Triggers>
-            </ControlTemplate>            
-            
+            </ControlTemplate>
+
             <!-- 信息显示样式布局 -->
             <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#007EB4EA"/>
             <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#00569DE5"/>
@@ -502,7 +503,7 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            
+
             <!-- 阿里巴巴矢量图标定义 -->
             <Style x:Key="FIcon" TargetType="TextBlock">
                 <Setter Property="FontFamily" Value="pack://application:,,,/Resources/Icon/#iconfont"></Setter>
@@ -511,6 +512,34 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="FontSize" Value="20"/>
             </Style>
+
+            <!-- 用户列表显示数据模板 -->
+            <DataTemplate x:Key="OnlineUserInfo">
+                <Button Height="35" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                    <DockPanel Height="35" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Width="24" Source="{Binding Avar}" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                        <Label Content="{Binding Name}" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="12" Foreground="#FF4F4F4F" Margin="0,0,-70,0" Width="71"/>
+                        <Label Content="{Binding Content}" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Background="#00B8B8B8" Foreground="#FFB8B8B8" Margin="0,0,-17,0" Width="118" />
+                        <Label Content="{Binding Time}" FontSize="10" Foreground="#FF939393" Width="33"/>
+                    </DockPanel>
+                </Button>
+            </DataTemplate>
+
+            <!-- 用户输入框上面的工具栏-->
+            <Style TargetType="{x:Type Button}" x:Key="formatTextStyle">
+                <Setter Property="FontFamily" Value="Palatino Linotype"></Setter>
+                <Setter Property="Width" Value="30"></Setter>
+                <Setter Property="FontSize" Value ="14"></Setter>
+                <Setter Property="CommandTarget" Value="{Binding ElementName=ChatingContentMsg}"></Setter>
+            </Style>
+
+            <Style TargetType="{x:Type Button}" x:Key="formatImageStyle">
+                <Setter Property="Width" Value="23"></Setter>
+                <Setter Property="Cursor" Value="Hand"></Setter>
+                <Setter Property="CommandTarget" Value="{Binding ElementName=ChatingContentMsg}"></Setter>
+            </Style>
+
+
         </ResourceDictionary>
     </Window.Resources>
     <themes:UniversalWindowStyle.TitleBar>
@@ -582,15 +611,7 @@
                                           MinWidth="220">
                                     <TreeViewItem x:Name="CustomerOwnerChating" Header="等待应答" Foreground="#FF4F4F4F"></TreeViewItem>
                                     <TreeViewItem Header="自己"  Foreground="#FF4F4F4F">
-                                        <TreeViewItem Header="对话中的访客" Foreground="#FF4F4F4F" >
-                                            <TreeView Margin="-30,0,0,0">
-                                                <DockPanel Height="35">
-                                                    <Image Width="24" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
-                                                    <Label Content="局域网 IP|艺星访客1528720115" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="12" Foreground="#FF4F4F4F" Margin="0,0,-70,0" Width="71"/>
-                                                    <Label Content="我想咨询一下玻尿酸注射" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Background="#00B8B8B8" Foreground="#FFB8B8B8" Margin="0,0,-17,0" Width="118" />
-                                                    <Label Content="17:01" FontSize="10" Foreground="#FF939393" Width="33"/>
-                                                </DockPanel>
-                                            </TreeView>
+                                        <TreeViewItem x:Name="OnlineCustomer" Header="对话中的访客" Foreground="#FF4F4F4F" ItemTemplate="{StaticResource OnlineUserInfo}">
                                         </TreeViewItem>
                                         <TreeViewItem Header="转接中的访客" Foreground="#FF4F4F4F" ></TreeViewItem>
                                         <TreeViewItem Header="主动邀请的访客" Foreground="#FF4F4F4F" ></TreeViewItem>
@@ -633,25 +654,46 @@
                                 <!-- x:Name="numberedItemsStackPanel" Orientation="Horizontal" -->
                                 <StackPanel x:Name="ChatingContent" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <Label Content="17:58:30 admin正在为您服务" HorizontalAlignment="Center" Margin="0,10,0,10" Background="White" Width="210" HorizontalContentAlignment="Center" Foreground="#FFAAA4A4"/>
+
+                                    <DockPanel HorizontalAlignment="Left" Margin="8,10,0,0">
+                                        <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" VerticalAlignment="Top"/>
+                                        <StackPanel VerticalAlignment="Top">
+                                            <Label Content="18:13:30" HorizontalAlignment="Left" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" VerticalAlignment="Stretch" />
+                                            <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                                <Image Width="8"  Source="../Resources/chat_desktop_left_icon.png" VerticalAlignment="Top" HorizontalAlignment="Right" Height="8" Margin="-1,14,0,0">
+                                                </Image>
+                                                <StackPanel Width="200" Background="White" HorizontalAlignment="Center" VerticalAlignment="Stretch" MinWidth="30">
+                                                    <RichTextBox Template="{DynamicResource RichTextBoxTemplate1}">
+                                                        <FlowDocument>
+                                                            <Paragraph>
+                                                                <TextBlock Text="阿萨大厦大"/>
+                                                                <Image Source="https://video.yestar.com/2019/05/23%20100749/xingpai/5ce600750183a.jpg"/>
+                                                            </Paragraph>
+                                                        </FlowDocument>
+                                                    </RichTextBox>
+                                                </StackPanel>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DockPanel>
+
                                     <DockPanel HorizontalAlignment="Right" Margin="0,10,8,0">
                                         <StackPanel VerticalAlignment="Top">
                                             <Label Content="18:13:30" HorizontalAlignment="Right" Foreground="#FF666666" FontSize="14" VerticalContentAlignment="Top" />
                                             <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="0,0,0,0">
-                                                <StackPanel Width="220" Height="105" Background="white" Margin="0,0,-17,0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                    <DockPanel  HorizontalAlignment="Left" Height="82">
-                                                        <StackPanel Width="150">
-                                                            <TextBlock Padding="5" TextWrapping="Wrap"  Text="2020年2月值班表技术部 - 张维东.xls" MaxWidth="175"/>
-                                                            <Label Content="25 KB"/>
-                                                        </StackPanel>
-                                                        <Image Source="pack://application:,,,/Resources/zip.png" Width="45" />
-                                                    </DockPanel>
-                                                    <Label Content="Yestar桌面版" BorderBrush="#FFDEDDDD" BorderThickness="0,1,0,0"/>
+                                                <StackPanel Background="#b0e28d" Width="200" HorizontalAlignment="Center" VerticalAlignment="Stretch" MinWidth="30">
+                                                    <Border CornerRadius="5">
+                                                        <Image Source="https://video.yestar.com/chat_1589535566125_msg.jpg" Opacity="0" />
+                                                        <Border.Background>
+                                                            <ImageBrush ImageSource="https://video.yestar.com/chat_1589535566125_msg.jpg"/>
+                                                        </Border.Background>
+                                                    </Border>
                                                 </StackPanel>
-                                                <Image Width="32" Margin="0,-5,-5,0"  Source="../Resources/chat_desktop_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                                                <Image Width="8" Source="../Resources/chat_desktop_right_triangle_icon.png" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="-1,14,0,0" Height="8"/>
                                             </DockPanel>
                                         </StackPanel>
                                         <Image Width="41" Source="https://video.yestar.com/chat_desktop_customer_avatr_img.png" VerticalAlignment="Top"/>
                                     </DockPanel>
+                                    
                                 </StackPanel>
                             </ScrollViewer.Content>
                         </ScrollViewer>
@@ -664,53 +706,63 @@
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
-                    <Frame x:Name="ButClick" NavigationUIVisibility="Hidden"/>
+                    <Frame x:Name="ButClick" NavigationUIVisibility="Hidden" Navigated="ButClick_Navigated"/>
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition MaxHeight="32"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <DockPanel Grid.Row="0" Background="#FFFBFBFB">
-                            <Button BorderBrush="{x:Null}" Click="Face_Button_Click"  Background="{x:Null}" Cursor="Hand" Height="28" Width="32" HorizontalAlignment="Left">
-                                <Image Source="pack://application:,,,/Resources/tk_emoji_icon.png" Margin="-13,0,-13,0"/>
-                            </Button>
-                            <Button BorderBrush="{x:Null}" Click="Upload_Image_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_picture_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}" Click="Send_Shake_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_shock_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}" Name="PrintScreen" Click="Print_Screen"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_scrshot_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_word_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}" Click="Auto_Click"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_voice_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}" Click="File_Click" Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_file_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_good_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}" Name="Trans" Click="Baidu_Trans"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_trans_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
-                            <Button BorderBrush="{x:Null}"  Background="{x:Null}" Cursor="Hand" Height="28" HorizontalAlignment="Left" Width="32">
-                                <Image  Source="../Resources/tk_text_icon.png" Margin="-13,0,-13,0" />
-                            </Button>
+                            <ToolBar Name="mainToolBar">
+                                <Button Style="{StaticResource formatImageStyle}" Click="Face_Button_Click" ToolTip="表情">
+                                    <Image Source="pack://application:,,,/Resources/tk_emoji_icon.png"/>
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" Click="Upload_Image_Click" ToolTip="发送图片">
+                                    <Image  Source="../Resources/tk_picture_icon.png"  />
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" Click="Send_Shake_Click" ToolTip="震动">
+                                    <Image  Source="../Resources/tk_shock_icon.png" />
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" Name="PrintScreen" Click="Print_Screen" ToolTip="截屏">
+                                    <Image  Source="../Resources/tk_scrshot_icon.png" />
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" Cursor="Hand" ToolTip="文字">
+                                    <Image  Source="../Resources/tk_word_icon.png"  />
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" Click="Auto_Click" ToolTip="语音识别">
+                                    <Image  Source="../Resources/tk_voice_icon.png"/>
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}"  Click="File_Click" ToolTip="上传文件">
+                                    <Image  Source="../Resources/tk_file_icon.png"/>
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" ToolTip="评价">
+                                    <Image  Source="../Resources/tk_good_icon.png"/>
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" Name="Trans" Click="Baidu_Trans" ToolTip="翻译">
+                                    <Image  Source="../Resources/tk_trans_icon.png"/>
+                                </Button>
+                                <Button Style="{StaticResource formatImageStyle}" ToolTip="格式化">
+                                    <Image  Source="../Resources/tk_text_icon.png"/>
+                                </Button>
+                                <Button Style="{StaticResource formatTextStyle}" Command="EditingCommands.ToggleBold" ToolTip="Bold">
+                                    <TextBlock FontWeight="Bold">B</TextBlock>
+                                </Button>
+                                <Button Style="{StaticResource formatTextStyle}" Command="EditingCommands.ToggleItalic" ToolTip="Italic">
+                                    <TextBlock FontStyle="Italic" FontWeight="Bold">I</TextBlock>
+                                </Button>
+                                <Button Style="{StaticResource formatTextStyle}" Command="EditingCommands.ToggleUnderline" ToolTip="Underline">
+                                    <TextBlock TextDecorations="Underline" FontWeight="Bold">U</TextBlock>
+                                </Button>
+                            </ToolBar>
                         </DockPanel>
                         <Grid Grid.Row="1" Background="White">
                             <Grid.RowDefinitions>
                                 <RowDefinition MinHeight="112"/>
                                 <RowDefinition MaxHeight="46" />
                             </Grid.RowDefinitions>
-                            <RichTextBox Grid.Row="0" Name="ChatingContentMsg" AcceptsReturn="False" KeyDown="ChatingContentMsg_KeyDown" BorderThickness="0,0,0,0" Padding="10,10,10,10" ScrollViewer.CanContentScroll="True">
+                            <RichTextBox Grid.Row="0" Name="ChatingContentMsg" SpellCheck.IsEnabled="True" AcceptsReturn="False" KeyDown="ChatingContentMsg_KeyDown" BorderThickness="0,0,0,0" Padding="10,10,10,10" ScrollViewer.CanContentScroll="True">
                             </RichTextBox>
-                            <!--<TextBox x:Name="ChatingContentMsg" KeyDown="ChatingContentMsg_KeyDown" Grid.Row="0" TextWrapping="Wrap" AcceptsReturn="False" BorderThickness="0,0,0,0" ScrollViewer.CanContentScroll="True" Padding="10,10,10,10" />-->
-                            <!--<RichTextBox x:Name="ChatingContentMsg" Grid.Row="0" KeyDown="ChatingContentMsg_KeyDown" AcceptsReturn="False" BorderThickness="0,0,0,0" ScrollViewer.CanContentScroll="True" Padding="10,10,10,10"></RichTextBox>-->
+
                             <DockPanel Grid.Row="1" MaxHeight="46">
                                 <Button  Width="80" HorizontalAlignment="Right" Height="26" Content="发送" Background="#FF108BFE" Foreground="White" FontSize="16" BorderThickness="0,0,0,0" Margin="0,10,10,10" Click="Button_Click" Cursor="Hand"/>
                             </DockPanel>

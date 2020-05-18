@@ -10,7 +10,7 @@ namespace Customer.Until
 {
     class RichTextBoxUtil
     {
-        private RichTextBox RichTextBoxs { get; set; }
+        public RichTextBox RichTextBoxs { get; set; }
 
         private TextRange TextRanges { get; set; }
 
@@ -160,6 +160,18 @@ namespace Customer.Until
                         using System.Xml.XmlReader xmlReader = System.Xml.XmlReader.Create(stringReader);
                         RichTextBoxs.Document = (FlowDocument)System.Windows.Markup.XamlReader.Load(xmlReader);
                     }
+                }
+            }
+        }
+
+        public FlowDocument GetFlowDocument
+        {
+            get
+            {
+                using (StringReader stringReader = new StringReader(GetRichTextBoxToString))
+                {
+                    using System.Xml.XmlReader xmlReader = System.Xml.XmlReader.Create(stringReader);
+                    return (FlowDocument)System.Windows.Markup.XamlReader.Load(xmlReader);
                 }
             }
         }

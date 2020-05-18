@@ -2,8 +2,7 @@
 using System.Configuration;
 using System.Runtime.InteropServices;
 
-namespace Customer.until
-{
+namespace Customer.Until{
     class ConfigUntil
     {
         /// <summary>

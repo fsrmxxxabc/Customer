@@ -3,11 +3,11 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace Customer.until
+namespace Customer.Until
 {
     class HttpUntil
     {
-        private const String urlClient = "http://10.7.9.186:8080/api/";
+        private const String urlClient = "http://localhost:8080/api/";
 
         private static HttpWebRequest http;
 

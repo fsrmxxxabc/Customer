@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation.Peers;
@@ -127,12 +126,19 @@ namespace Customer.Until
             {
                 if(value != null)
                 {
-                    App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.SystemIdle, (ThreadStart)delegate ()
+                    /*App.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.SystemIdle, (ThreadStart)delegate ()
                     {
-                        _ = new InlineUIContainer(value, View.Index.ChatingContMsg.Selection.Start);
-                        View.Index.ChatingContMsg.ScrollToEnd();
+                        //View.Index.ChatingContMsg.Document.Blocks.Add(value);
+                        _ = new InlineUIContainer(value, View.Index.ChatingContMsg.CaretPosition);
                         View.Index.ChatingContMsg.Focus();
-                    });
+                        //View.Index.ChatingContMsg.CaretPosition = pointer.DocumentEnd;
+                        //View.Index.ChatingContMsg.Focus();
+                    });*/
+                    View.Index.ChatingContMsg.Dispatcher.Invoke(new Action(() =>
+                    {
+                        _ = new InlineUIContainer(value, View.Index.ChatingContMsg.CaretPosition);
+                        View.Index.ChatingContMsg.Focus();
+                    }));
                 }
             }
         }
@@ -146,12 +152,16 @@ namespace Customer.Until
                     Image img = new Image
                     {
                         Width = 20,
-                        Source = SetBitImageInfo(value),
-                        DataContext = value
+                        Source = SetBitImageInfo(value)
                     };
-
-                    ImageBehavior.SetAnimatedSource(img, img.Source);
-                    AddToRichTextBox = img;
+                    //ImageBehavior.SetAnimatedSource(img, img.Source);
+                    img.Dispatcher.Invoke(new Action(() =>
+                    {
+                        //ImageBehavior.SetAnimatedSource(img, img.Source);
+                        AddToRichTextBox = img;
+                    }));
+                    //ImageBehavior.SetAnimatedSource(img, img.Source);
+                    
                 }
             }
         }

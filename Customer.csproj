@@ -40,6 +40,8 @@
     <None Remove="chat_login_right_field1.png" />
     <None Remove="chat_login_right_field2.png" />
     <None Remove="chat_login_right_top1.png" />
+    <None Remove="Resources\chat_desktop_left_icon.png" />
+    <None Remove="Resources\chat_desktop_right_triangle_icon.png" />
     <None Remove="Resources\chat_desktop_top_icons.png" />
     <None Remove="Resources\chat_desktop_triangle_icon.png" />
     <None Remove="Resources\chat_login_right_field1.png" />
@@ -70,6 +72,8 @@
 
   <ItemGroup>
     <Resource Include="chat_desktop_logo.png" />
+    <Resource Include="Resources\chat_desktop_left_icon.png" />
+    <Resource Include="Resources\chat_desktop_right_triangle_icon.png" />
     <Resource Include="Resources\chat_desktop_top_icons.png" />
     <Resource Include="Resources\chat_desktop_triangle_icon.png" />
     <Resource Include="Resources\chat_login_right_field1.png" />
@@ -116,10 +120,6 @@
     <Reference Include="SpRecognition">
       <HintPath>..\SpRecognition\SpRecognition\bin\Release\netcoreapp3.1\SpRecognition.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interface\" />
   </ItemGroup>
 
   <ItemGroup>

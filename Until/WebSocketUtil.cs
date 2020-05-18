@@ -1,4 +1,5 @@
-﻿using Customer.Until.Chat;
+﻿using Customer.Controller;
+using Customer.Until.Chat;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
@@ -11,9 +12,11 @@ namespace Customer.Until
 	{
 		private String Content { get; set; }
 
+		private View.Index.SocketReply socketReply = new View.Index.SocketReply(View.Index.SockListen);
+
 		public WebSocketUtil()
 		{
-			ConnectWebsocket = new WebSocket("ws://localhost:8080/socket/c511355a1013483e9a5");
+			ConnectWebsocket = new WebSocket("ws://localhost:8080/socket/"+ConfigUntil.GetSettingString("token"));
 		}
 
 		public static WebSocket WebSockets { get; set; }
@@ -30,10 +33,39 @@ namespace Customer.Until
 			{
 				MessageReceivedEventArgs responseMsg = (MessageReceivedEventArgs)e;
 				string strMsg = responseMsg.Message;
-				GetCont = strMsg;
-				IndexUtil indexUtil = new IndexUtil(new CustInfo(SetCustparam(GetCont,400)), new DockPanel());
-				View.Index.Chatingmsg.Children.Add(indexUtil.DockPanel);
+				//GetCont = strMsg;
+				DistFrom(strMsg);
 			}));
+		}
+
+		/// <summary>
+		/// 消息回复
+		/// </summary>
+		/// <param name="str"></param>
+		private void ReciveMsg(string str)
+		{
+			IndexUtil indexUtil = new IndexUtil(new CustInfo(SetCustparam(str, 400)), new DockPanel());
+			View.Index.Chatingmsg.Children.Add(indexUtil.DockPanel);
+		}
+
+		private void DistFrom(string str)
+		{
+			JObject jObject = JObject.Parse(str);
+			if (jObject.ContainsKey("disturl"))
+			{
+				_ = HomeController.CustItems;
+				return;
+			}
+			socketReply(str);
+		}
+
+		/// <summary>
+		/// 服务端数据更新推送
+		/// </summary>
+		/// <param name="str"></param>
+		private void ReciveType(string str)
+		{
+
 		}
 
 		private CustParam SetCustparam(String content)
@@ -47,7 +79,7 @@ namespace Customer.Until
 			};
 		}
 
-		private CustParam SetCustparam(string content, int width)
+		private static CustParam SetCustparam(string content, int width)
 		{
 			return new CustParam()
 			{

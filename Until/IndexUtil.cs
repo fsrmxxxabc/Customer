@@ -95,11 +95,20 @@ namespace Customer.Until
         {
             App.Current.Dispatcher.Invoke((Action)(() =>
             {
-                IndexUtil indexUtil = new IndexUtil(new CustInfo(cust),cust.MsgCont);
+                IndexUtil indexUtil = new IndexUtil(new CustInfo(cust),cust.HtmlCont);
                 View.Index.Chatingmsg.Children.Add(indexUtil.DockPaneUserNew);
                 WebSocketUtil.WebSockets.Send(indexUtil.Jobject.ToString());
                 View.Index.ChatingContMsg.Document.Blocks.Clear();
             }));
+        }
+
+        public static void SendData(RichTextBoxUtil richTextBoxUtil)
+        {
+            string str = richTextBoxUtil.GetRichTextBoxToString;
+            string result = HtmlFromXamlConverter.ConvertXamlToHtml(str);
+            WebSocketUtil.WebSockets.Send(new ContUtil(result).ContParam.ToString());
+            //int width = CommonUtil.GetRichTextBoxWidth(richTextBoxUtil.GetRichTextBoxToString, richTextBoxUtil.GetRichTextBoxCont);
+
         }
 
         /// <summary>
@@ -397,7 +406,8 @@ namespace Customer.Until
                 set
                 {
                     CustInfot.IconImage.HorizontalAlignment = HorizontalAlignment.Right;
-                    CustInfot.IconImage.Margin = new Thickness(0, 0, -68, 5);
+                    CustInfot.IconImage.Margin = new Thickness(17, 5, 0, 0);
+                    CustInfot.IconImage.Width = 12;
                 }
             }
 

@@ -8,11 +8,12 @@ using Customer.Until.Chat;
 using Microsoft.Win32;
 using Customer.Until.Qiniu;
 using Newtonsoft.Json.Linq;
-using Customer.until;
 using SpRecognition;
 using System.Windows.Documents;
 using Customer.View.Pages;
 using System.IO;
+using Customer.Model;
+using Customer.Controller;
 
 namespace Customer.View
 {
@@ -26,8 +27,6 @@ namespace Customer.View
 
         public static RichTextBox ChatingContMsg { get; set; }
 
-        private static RichTextBoxUtil RichTextBoxUtils { get; set; }
-
         public static RichTextBox MsgRichTextBoxTemps { get; set; }
 
 
@@ -39,6 +38,8 @@ namespace Customer.View
 
         private readonly TransPage BdTrans = new TransPage();
 
+        public delegate void SocketReply(string msg);
+
         public Index()
         {
             InitializeComponent();
@@ -48,8 +49,6 @@ namespace Customer.View
             ChatingContMsg = this.ChatingContentMsg;
 
             MsgRichTextBoxTemps = this.MsgRichTextBoxTemp;
-
-            RichTextBoxUtils = new RichTextBoxUtil(this.ChatingContentMsg);
 
             Recognition.GetAutoComment += AutoResult;
 
@@ -63,6 +62,8 @@ namespace Customer.View
             this.ChatingContent.Children.Clear();
 
             this.ChatingContent.Children.Add(new IndexUtil(FormattableString.Invariant($"{DateTime.Now}") + " " + ConfigUntil.GetSettingString("userName") + "正在为您服务").Label);
+
+            this.OnlineCustomer.ItemsSource = HomeController.CustItems;
         }
 
         private void DockPanel_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -79,7 +80,7 @@ namespace Customer.View
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            IndexUtil.SendData(SetCustparam(RichTextBoxUtils.GetRichTextBoxCont));
+            IndexUtil.SendData(SetCustparam(new RichTextBoxUtil(ChatingContentMsg).GetRichTextBoxCont));
         }
 
         /// <summary>
@@ -98,14 +99,15 @@ namespace Customer.View
             };
         }
 
-        private CustParam SetCustparam(string content, int width)
+        private CustParam SetCustparam(string content, int width,string html)
         {
             return new CustParam()
             {
                 UserImage = "https://video.yestar.com/chat_desktop_kf_icon.png",
                 UserTime = DateTime.Now.ToLongTimeString(),
                 MsgCont = content,
-                RichTextBoxWidth = width
+                RichTextBoxWidth = width,
+                HtmlCont = html
             };
         }
 
@@ -120,12 +122,26 @@ namespace Customer.View
             if (e.Key == Key.Return)
             {
                 RichTextBoxUtil richTextBoxUtil = new RichTextBoxUtil(this.ChatingContentMsg);
-                MessageBox.Show(HtmlFromXamlConverter.ConvertXamlToHtml(richTextBoxUtil.GetRichTextBoxToString));
-                //RichTextBoxUtils.SaveRichTextBoxContent = "../../../Resources/Content/Content.rtf";
-                /*_ = new RtfToHtmlUtil("../../../Resources/Content/Content.rtf");
-                int width = CommonUtil.GetRichTextBoxWidth(RichTextBoxUtils.GetRichTextBoxToString, RichTextBoxUtils.GetRichTextBoxCont);
-                IndexUtil.SendData(SetCustparam(RichTextBoxUtils.GetRichTextBoxToString, width));*/
+                IndexUtil.SendData(richTextBoxUtil);
+
+                CustoParam custoParam = new CustoParam()
+                {
+                    Contpl = this.MsgRichTextBoxTemp.Template,
+                    Document = richTextBoxUtil.GetFlowDocument,
+                    Width = CommonUtil.GetRichTextBoxWidth(richTextBoxUtil.GetRichTextBoxToString, richTextBoxUtil.GetRichTextBoxCont),
+                    RTB = new RichTextBox(),
+                    Default = new DockPanel()
+                };
+
+                ChatingContent.Children.Add(custoParam.Dock);
+                ChatingContentMsg.Document.Blocks.Clear();
             }
+        }
+
+        public void AppendRichText(UIElement uIElement)
+        {
+            _ = new InlineUIContainer(uIElement, ChatingContentMsg.CaretPosition);
+            ChatingContentMsg.Focus();
         }
 
         private void Face_Button_Click(object sender, RoutedEventArgs e)
@@ -165,7 +181,14 @@ namespace Customer.View
 
                 JObject jObject = JObject.Parse(ret);
 
-                CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);
+                ImageParam imageParam = new ImageParam()
+                {
+                    Image = new Image() { Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(QiniuUtil.Domain + jObject["key"])),Opacity = 0 },
+                    Bord = QiniuUtil.Domain + jObject["key"],
+                    Default = new DockPanel(),
+                };
+
+                ChatingContent.Children.Add(imageParam.Dock);
             }
         }
 
@@ -228,6 +251,34 @@ namespace Customer.View
 
         }
 
+        public static void SockListen(string cont)
+        {
+            /*FlowDocument flowDocument = new FlowDocument();
+            Paragraph paragraph = new Paragraph();
+            Run run = new Run() { Text = "娃哈哈" };
+            paragraph.Inlines.Add(run);
+            flowDocument.Blocks.Add(paragraph);
+
+            VisitorRTBParam visitorRTBParam = new VisitorRTBParam()
+            {
+                Width = 60,
+                Contpl = MsgRichTextBoxTemps.Template,
+                Flow = flowDocument,
+                RTB = new RichTextBox(),
+                Default = new DockPanel()
+            };
+
+            Chatingmsg.Children.Add(visitorRTBParam.Dock);*/
+
+            VisitorImgParam visitorImgParam = new VisitorImgParam()
+            {
+                Image = new Image() { Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("https://video.yestar.com/chat_1589530320287_msg.jpg")) },
+                Bord = "https://video.yestar.com/chat_1589530320287_msg.jpg",
+                Default = new DockPanel()
+            };
+            Chatingmsg.Children.Add(visitorImgParam.Dock);
+        }
+
         private void Baidu_Trans(object sender, RoutedEventArgs e)
         {
             BdTrans.TransDialogHost.IsOpen = BdTrans.TransDialogHost.IsOpen ? false : true;
@@ -246,23 +297,24 @@ namespace Customer.View
                 using (FileStream file = File.OpenRead(openFileDialog.FileName))
                 {
                     System.Drawing.Bitmap map = new FileUtil().GetIconName(CommonUtil.GetFileExtra(openFileDialog.SafeFileName));
-                    //MessageBox.Show(str + ": " + FormattableString.Invariant($"{file.Length/1024}")+" KB");
-                    FileParam fileParam = new FileParam() { FileIcon = map, UserImg = "https://video.yestar.com/chat_desktop_customer_avatr_img.png", FileName = openFileDialog.SafeFileName, FileSize = FormattableString.Invariant($"{file.Length / 1024}") + " KB" };
-                    this.ChatingContent.Children.Add(fileParam.instance());
+                    FileParam fileParam = new FileParam()
+                    {
+                        FileIcon = map,
+                        UserImg = "https://video.yestar.com/chat_desktop_customer_avatr_img.png",
+                        FileName = openFileDialog.SafeFileName,
+                        FileSize = FormattableString.Invariant($"{file.Length / 1024}") + " KB",
+                        Default = new FileParam().FileDefault,
+                        instance = new DockPanel()
+                    };
+                    ChatingContent.Children.Add(fileParam.instance);
 
                 }
-                /*QiniuUtil qiniuUtil = new QiniuUtil()
-                {
-                    ConfigUtil = new Qiniu.Storage.Config(),
-                    TokenUtil = null
-                };
-
-                string ret = qiniuUtil.ChunkUpload("chat_" + CommonUtil.GetTimeSecond() + "_msg." + CommonUtil.GetFileExtra(openFileDialog.SafeFileName), openFileDialog.FileName);
-
-                JObject jObject = JObject.Parse(ret);
-
-                CommonUtil.SetImage(QiniuUtil.Domain + jObject["key"]);*/
             }
+        }
+
+        private void ButClick_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+
         }
     }
 }

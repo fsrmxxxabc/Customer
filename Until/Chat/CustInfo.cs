@@ -131,6 +131,7 @@ namespace Customer.Until.Chat
         {
             get
             {
+                DockPanel dock = new DockPanel();
                 RichTextBox richTextBox =  new RichTextBox()
                 {
                     VerticalAlignment = VerticalAlignment.Top,

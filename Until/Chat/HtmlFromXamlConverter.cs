@@ -72,7 +72,6 @@ namespace Customer.Until.Chat
         /// </param>
         private static bool WriteFlowDocument(XmlTextReader xamlReader, XmlTextWriter htmlWriter)
         {
-            Trace.WriteLine(xamlReader);
             if (!ReadNextToken(xamlReader))
             {
                 // Xaml content is empty - nothing to convert
@@ -104,7 +103,6 @@ namespace Customer.Until.Chat
 
         private static bool WriteFlowDocument(XmlReader xamlReader, XmlWriter htmlWriter)
         {
-            Trace.WriteLine(xamlReader);
             if (!ReadNextToken(xamlReader))
             {
                 // Xaml content is empty - nothing to convert
@@ -121,15 +119,15 @@ namespace Customer.Until.Chat
             // on every element level (it will be re-initialized on every level).
             StringBuilder inlineStyle = new StringBuilder();
 
-            htmlWriter.WriteStartElement("HTML");
-            htmlWriter.WriteStartElement("BODY");
+            //htmlWriter.WriteStartElement();
+            htmlWriter.WriteStartElement("DIV");
 
             WriteFormattingProperties(xamlReader, htmlWriter, inlineStyle);
 
             WriteElementContent(xamlReader, htmlWriter, inlineStyle);
 
             htmlWriter.WriteEndElement();
-            htmlWriter.WriteEndElement();
+            //htmlWriter.WriteEndElement();
 
             return true;
         }
@@ -368,7 +366,12 @@ namespace Customer.Until.Chat
                     // Table attributes
                     // ----------------
                     case "Width":
-                        css = "width:" + xamlReader.Value + ";";
+                        css = "width:" + xamlReader.Value + "px;";
+                        break;
+
+                    case "Source":
+                        //css = "src:" + xamlReader.Value + ";";
+                        htmlWriter.WriteAttributeString("src", xamlReader.Value);
                         break;
                     case "ColumnSpan":
                         htmlWriter.WriteAttributeString("COLSPAN", xamlReader.Value);
@@ -529,8 +532,6 @@ namespace Customer.Until.Chat
         private static void WriteElementContent(XmlReader xamlReader, XmlWriter htmlWriter, StringBuilder inlineStyle)
         {
             Debug.Assert(xamlReader.NodeType == XmlNodeType.Element);
-            Trace.WriteLine(htmlWriter);
-            Trace.WriteLine(inlineStyle);
             bool elementContentStarted = false;
 
             if (xamlReader.IsEmptyElement)

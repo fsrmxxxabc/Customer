@@ -38,16 +38,6 @@ namespace Customer.Until
 			}));
 		}
 
-		/// <summary>
-		/// 消息回复
-		/// </summary>
-		/// <param name="str"></param>
-		private void ReciveMsg(string str)
-		{
-			IndexUtil indexUtil = new IndexUtil(new CustInfo(SetCustparam(str, 400)), new DockPanel());
-			View.Index.Chatingmsg.Children.Add(indexUtil.DockPanel);
-		}
-
 		private void DistFrom(string str)
 		{
 			JObject jObject = JObject.Parse(str);
@@ -63,32 +53,10 @@ namespace Customer.Until
 		/// 服务端数据更新推送
 		/// </summary>
 		/// <param name="str"></param>
-		private void ReciveType(string str)
+		/*private void ReciveType()
 		{
 
-		}
-
-		private CustParam SetCustparam(String content)
-		{
-			return new CustParam()
-			{
-				Url = "https://video.yestar.com/chat_desktop_visitor.png",
-				Time = DateTime.Now.ToLongTimeString(),
-				UrlIcon = "pack://application:,,,/Resources/chat_desktop_triangle_icon.png",
-				Content = content,
-			};
-		}
-
-		private static CustParam SetCustparam(string content, int width)
-		{
-			return new CustParam()
-			{
-				UserImage = "https://video.yestar.com/chat_desktop_visitor.png",
-				UserTime = DateTime.Now.ToLongTimeString(),
-				MsgCont = content,
-				RichTextBoxWidth = width
-			};
-		}
+		}*/
 
 		public String GetCont
 		{

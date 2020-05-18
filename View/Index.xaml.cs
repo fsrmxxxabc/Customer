@@ -80,35 +80,9 @@ namespace Customer.View
         /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            IndexUtil.SendData(SetCustparam(new RichTextBoxUtil(ChatingContentMsg).GetRichTextBoxCont));
-        }
-
-        /// <summary>
-        /// 回复消息的消息体
-        /// </summary>
-        /// <param name="token"></param>
-
-        private CustParam SetCustparam(String content)
-        {
-            return new CustParam()
-            {
-                Url = "https://video.yestar.com/chat_desktop_kf_icon.png",
-                Time = DateTime.Now.ToLongTimeString(),
-                UrlIcon = "pack://application:,,,/Resources/chat_desktop_triangle_icon.png",
-                Content = content,
-            };
-        }
-
-        private CustParam SetCustparam(string content, int width,string html)
-        {
-            return new CustParam()
-            {
-                UserImage = "https://video.yestar.com/chat_desktop_kf_icon.png",
-                UserTime = DateTime.Now.ToLongTimeString(),
-                MsgCont = content,
-                RichTextBoxWidth = width,
-                HtmlCont = html
-            };
+            RichTextBoxUtil richTextBoxUtil = new RichTextBoxUtil(this.ChatingContentMsg);
+            IndexUtil.SendData(richTextBoxUtil);
+            SendData(richTextBoxUtil);
         }
 
 
@@ -123,19 +97,23 @@ namespace Customer.View
             {
                 RichTextBoxUtil richTextBoxUtil = new RichTextBoxUtil(this.ChatingContentMsg);
                 IndexUtil.SendData(richTextBoxUtil);
-
-                CustoParam custoParam = new CustoParam()
-                {
-                    Contpl = this.MsgRichTextBoxTemp.Template,
-                    Document = richTextBoxUtil.GetFlowDocument,
-                    Width = CommonUtil.GetRichTextBoxWidth(richTextBoxUtil.GetRichTextBoxToString, richTextBoxUtil.GetRichTextBoxCont),
-                    RTB = new RichTextBox(),
-                    Default = new DockPanel()
-                };
-
-                ChatingContent.Children.Add(custoParam.Dock);
-                ChatingContentMsg.Document.Blocks.Clear();
+                SendData(richTextBoxUtil);
             }
+        }
+
+        private void SendData(RichTextBoxUtil richTextBoxUtil)
+        {
+            CustoParam custoParam = new CustoParam()
+            {
+                Contpl = this.MsgRichTextBoxTemp.Template,
+                Document = richTextBoxUtil.GetFlowDocument,
+                Width = CommonUtil.GetRichTextBoxWidth(richTextBoxUtil.GetRichTextBoxToString, richTextBoxUtil.GetRichTextBoxCont),
+                RTB = new RichTextBox(),
+                Default = new DockPanel()
+            };
+
+            ChatingContent.Children.Add(custoParam.Dock);
+            ChatingContentMsg.Document.Blocks.Clear();
         }
 
         public void AppendRichText(UIElement uIElement)
